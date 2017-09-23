@@ -40,7 +40,8 @@ public class Main {
   public static void main(String[] args) {
     Automaton.setMinimization(Automaton.MINIMIZE_HUFFMAN);
 
-    Automaton anyWordsAutomaton = BasicAutomata.makeCharSet(setToString(completeSet));
+    Automaton anyWordsAutomaton = BasicAutomata.makeCharSet(setToString(completeSet)).repeat();
+    anyWordsAutomaton.minimize();
 
     Automaton identifierWithoutDigitsAutomaton =
         BasicAutomata.makeCharSet(
@@ -49,11 +50,14 @@ public class Main {
                     .filter(character -> !digitsSet.contains(character))
                     .collect(Collectors.toSet())))
         .concatenate(anyWordsAutomaton);
+    identifierWithoutDigitsAutomaton.minimize();
 
     Automaton keywordsAutomaton =
         BasicAutomata.makeStringUnion(keywords.stream().toArray(String[]::new));
+    keywordsAutomaton.minimize();
 
     Automaton resultAutomaton = identifierWithoutDigitsAutomaton.minus(keywordsAutomaton);
+    resultAutomaton.minimize();
 
     System.out.println(anyWordsAutomaton.toDot());
     System.out.println(identifierWithoutDigitsAutomaton.toDot());
