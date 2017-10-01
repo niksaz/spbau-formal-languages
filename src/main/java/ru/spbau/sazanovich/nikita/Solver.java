@@ -12,5 +12,8 @@ public class Solver {
 
     Automaton automaton3A = Task3A.getAutomaton();
     System.out.println(automaton3A.toDot());
+
+    Automaton automaton3B = Task3B.getAutomaton();
+    System.out.println(automaton3B.toDot());
   }
 }

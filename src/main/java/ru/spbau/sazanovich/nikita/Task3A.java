@@ -6,11 +6,8 @@ import dk.brics.automaton.BasicAutomata;
 class Task3A {
 
   static Automaton getAutomaton() {
-    Automaton whitespaceAutomaton = BasicAutomata.makeChar('_').repeat();
-    Automaton digitsAutomaton = BasicAutomata.makeCharRange('0', '9');
-    Automaton integerAutomaton = digitsAutomaton.repeat(1);
-    Automaton integerWithWhitespacesAutomaton =
-        whitespaceAutomaton.concatenate(integerAutomaton).concatenate(whitespaceAutomaton);
+    Automaton whitespaceAutomaton = UtilAutomatons.getWhitespaceAutomaton();
+    Automaton integerWithWhitespacesAutomaton = UtilAutomatons.getIntegerWithWhitespacesAutomaton();
     Automaton semicolonAndIntegerWithWhitespacesAutomaton =
         BasicAutomata.makeChar(';')
             .concatenate(integerWithWhitespacesAutomaton);
