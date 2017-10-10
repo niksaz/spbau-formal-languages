@@ -20,6 +20,24 @@ public class LKeyword extends LToken {
     return "LKeyword{" + keywordType + ", " + positionToString() + '}';
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+
+    LKeyword lKeyword = (LKeyword) o;
+
+    return keywordType == lKeyword.keywordType;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + (keywordType != null ? keywordType.hashCode() : 0);
+    return result;
+  }
+
   public enum LKeywordType {
     IF,
     THEN,

@@ -20,6 +20,24 @@ public class LOperator extends LToken {
     return "LOperator{" + operatorType + ", " + positionToString() + '}';
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+
+    LOperator lOperator = (LOperator) o;
+
+    return operatorType == lOperator.operatorType;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + (operatorType != null ? operatorType.hashCode() : 0);
+    return result;
+  }
+
   public enum LOperatorType {
     PLUS,
     MINUS,

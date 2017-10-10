@@ -18,4 +18,22 @@ public class LBooleanLiteral extends LToken {
   public String toString() {
     return "LBooleanLiteral{" + value + ", " + positionToString() +'}';
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+
+    LBooleanLiteral that = (LBooleanLiteral) o;
+
+    return value == that.value;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + (value ? 1 : 0);
+    return result;
+  }
 }

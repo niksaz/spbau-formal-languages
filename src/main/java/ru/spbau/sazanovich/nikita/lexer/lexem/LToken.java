@@ -32,4 +32,24 @@ public abstract class LToken {
   protected String positionToString() {
     return foundOnLine + ", " + lineStartPosition + ", " + lineEndPosition;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    LToken lToken = (LToken) o;
+
+    if (foundOnLine != lToken.foundOnLine) return false;
+    if (lineStartPosition != lToken.lineStartPosition) return false;
+    return lineEndPosition == lToken.lineEndPosition;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = foundOnLine;
+    result = 31 * result + lineStartPosition;
+    result = 31 * result + lineEndPosition;
+    return result;
+  }
 }
