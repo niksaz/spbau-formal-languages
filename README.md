@@ -1,4 +1,4 @@
-#spbau-formal-languages
+# spbau-formal-languages
 Lexer for L language.
 
 ### How to run?
