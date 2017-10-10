@@ -30,14 +30,22 @@ import ru.spbau.sazanovich.nikita.lexer.lexem.LOperator.LOperatorType;
   }
 
   private LIntegerLiteral lIntegerLiteral() {
-    // TODO: Handle NumberFormatException properly.
-    int value = Integer.parseInt(yytext());
+    int value;
+    try {
+        value = Integer.parseInt(yytext());
+    } catch (NumberFormatException e) {
+        throw new LexerException(e.getMessage(), yyline, yycolumn);
+    }
     return new LIntegerLiteral(value, yyline, yycolumn, yycolumn + yylength());
   }
 
   private LFloatingPointLiteral lFloatingPointLiteral() {
-    // TODO: Handle NumberFormatException properly.
-    float value = Float.parseFloat(yytext());
+    float value;
+    try {
+        value = Float.parseFloat(yytext());
+    } catch (NumberFormatException e) {
+        throw new LexerException(e.getMessage(), yyline, yycolumn);
+    }
     return new LFloatingPointLiteral(value, yyline, yycolumn, yycolumn + yylength());
   }
 
@@ -89,9 +97,8 @@ Underscores = "_"*
 FloatingPointLiteral = {DecimalFloatingPointLiteral}
 
 DecimalFloatingPointLiteral =
-      {Digits} "." {Digits}?
+      {Digits} "." {Digits}? {ExponentPart}?
     | "." {Digits} {ExponentPart}?
-    | {Digits} {ExponentPart}
     | {Digits} {ExponentPart}?
 
 ExponentPart = {ExponentIndicator} {SignedInteger}
@@ -153,6 +160,4 @@ Sign = "+" | "-"
 }
 
 /* Error fallback */
-[^]                         { //TODO: Create custom exception for that case.
-                              throw new Error("Illegal character <" + yytext() + ">"); }
-
+[^]                         { throw new LexerException("Illegal character <" + yytext() + ">", yyline, yycolumn); }

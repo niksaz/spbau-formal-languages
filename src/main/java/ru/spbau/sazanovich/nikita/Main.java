@@ -1,6 +1,7 @@
 package ru.spbau.sazanovich.nikita;
 
 import ru.spbau.sazanovich.nikita.lexer.LFileLexer;
+import ru.spbau.sazanovich.nikita.lexer.LexerException;
 import ru.spbau.sazanovich.nikita.lexer.lexem.LToken;
 
 import java.io.IOException;
@@ -25,6 +26,9 @@ public class Main {
       printTokens(tokenList);
     } catch (IOException e) {
       System.out.println("IOError occurred: " + e.getMessage());
+    } catch (LexerException e) {
+      System.out.println("LexerException occurred at " +
+          e.getFoundOnLine() + ":" + e.getLineStartPosition() + ": " + e.getMessage());
     }
   }
 

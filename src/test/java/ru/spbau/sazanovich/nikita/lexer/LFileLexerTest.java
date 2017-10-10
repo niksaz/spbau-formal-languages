@@ -7,15 +7,17 @@ import static ru.spbau.sazanovich.nikita.lexer.lexem.LOperator.LOperatorType.*;
 import org.junit.Test;
 import ru.spbau.sazanovich.nikita.lexer.lexem.*;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 public class LFileLexerTest {
 
+  private static final String TEST_L_FILES_PATH = "src/test/resources/";
+
   @Test
   public void parse() throws Exception {
-    LFileLexer fileLexer = new LFileLexer("src/test/resources/example.lang");
-    List<LToken> tokenList = fileLexer.parse();
+    List<LToken> tokenList = getTokensForTestFile("example.lang");
     assertTokens(tokenList,
         new LKeyword(READ, 0, 0, 4),
         new LIdentifier("x", 0, 5, 6),
@@ -32,6 +34,27 @@ public class LFileLexerTest {
         new LKeyword(ELSE, 0, 35, 39),
         new LKeyword(WRITE, 0, 40, 45),
         new LIdentifier("x", 0, 46, 47));
+  }
+
+  @Test(expected = LexerException.class)
+  public void parseTooBigInteger() throws Exception {
+    getTokensForTestFile("big_integer.lang");
+  }
+
+  @Test
+  public void parseTooBigFloat() throws Exception {
+    List<LToken> tokenList = getTokensForTestFile("big_float.lang");
+    assertTokens(tokenList, new LFloatingPointLiteral(Float.POSITIVE_INFINITY, 0, 0, 12));
+  }
+
+  @Test(expected = LexerException.class)
+  public void parseUnknownSymbols() throws Exception {
+    getTokensForTestFile("unknown_symbols.lang");
+  }
+
+  private static List<LToken> getTokensForTestFile(String testFileName) throws IOException {
+    LFileLexer fileLexer = new LFileLexer(TEST_L_FILES_PATH + testFileName);
+    return fileLexer.parse();
   }
 
   private static void assertTokens(List<LToken> tokenList, LToken ... expectedTokens) {
