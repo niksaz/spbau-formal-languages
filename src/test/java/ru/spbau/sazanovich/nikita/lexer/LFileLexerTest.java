@@ -76,6 +76,29 @@ public class LFileLexerTest {
         new LKeyword(END, 3, 0, 3));
   }
 
+  @Test
+  public void parseExample3() throws Exception {
+    List<LToken> tokenList = getTokensForTestFile("example3.lang");
+    assertTokens(tokenList,
+        new LLeftBrace(0, 0, 1),
+        new LFloatingPointLiteral(987.0f, 0, 1, 5),
+        new LOperator(MINUS, 0, 6, 7),
+        new LIntegerLiteral(5, 0, 8, 9),
+        new LRightBrace(0, 9, 10),
+        new LOperator(MORE, 0, 11, 12),
+        new LLeftBrace(0, 13, 14),
+        new LFloatingPointLiteral(98.0f, 0, 14, 19),
+        new LOperator(ASTERISK, 0, 20, 21),
+        new LFloatingPointLiteral(1.0f, 0, 23, 26),
+        new LOperator(SLASH, 0, 27, 28),
+        new LIntegerLiteral(2, 0, 29, 30),
+        new LRightBrace(0, 30, 31),
+        new LOperator(EQUAL, 0, 32, 34),
+        new LBooleanLiteral(false, 0, 35, 40),
+        new LComment("It should be false for API method to work", 0, 41, 84),
+        new LComment("TODO(niksaz) //Move it out of here", 1, 0, 36));
+  }
+
   @Test(expected = LexerException.class)
   public void parseTooBigInteger() throws Exception {
     getTokensForTestFile("big_integer.lang");

@@ -36,12 +36,12 @@ class LLexer {
    */
   private static final String ZZ_CMAP_PACKED = 
     "\11\0\1\3\1\2\1\0\1\3\1\1\22\0\1\3\1\40\3\0"+
-    "\1\36\1\43\1\0\1\46\1\47\1\0\1\14\1\0\1\15\1\11"+
+    "\1\36\1\43\1\0\1\46\1\47\1\35\1\14\1\0\1\15\1\11"+
     "\1\4\1\10\1\7\1\7\1\7\1\7\1\7\1\7\1\7\1\7"+
     "\1\7\1\0\1\45\1\42\1\37\1\41\6\0\1\13\31\0\1\5"+
     "\1\0\1\31\1\32\1\6\1\26\1\12\1\17\1\33\1\21\1\16"+
     "\2\6\1\23\1\6\1\22\1\27\2\6\1\30\1\24\1\20\1\34"+
-    "\1\6\1\25\3\6\1\0\1\44\u219a\0\1\35\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uddf8\0";
+    "\1\6\1\25\3\6\1\0\1\44\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uff93\0";
 
   /** 
    * Translates characters to character classes
@@ -360,7 +360,7 @@ class LLexer {
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 168) {
+    while (i < 164) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);

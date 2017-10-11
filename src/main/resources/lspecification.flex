@@ -135,7 +135,7 @@ Sign = "+" | "-"
     /* Operators */
     "+"                     { return lOperator(LOperatorType.PLUS); }
     "-"                     { return lOperator(LOperatorType.MINUS); }
-    "∗"                     { return lOperator(LOperatorType.ASTERISK); }
+    "*"                     { return lOperator(LOperatorType.ASTERISK); }
     "/"                     { return lOperator(LOperatorType.SLASH); }
     "%"                     { return lOperator(LOperatorType.PERCENT); }
     "=="                    { return lOperator(LOperatorType.EQUAL); }
