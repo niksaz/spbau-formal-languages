@@ -1,0 +1,4 @@
+while x > 9 || y >= 1 && z  < 1 || t <= 1 do
+begin
+    if (x % y != 0 && __should_log == true) write z;
+end

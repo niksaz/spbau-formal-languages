@@ -711,7 +711,7 @@ class LLexer {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { throw new LexerException("Illegal character <" + yytext() + ">", yyline, yycolumn);
+            { throw new LexerException("Unexpected character <" + yytext() + ">", yyline, yycolumn);
             }
           case 34: break;
           case 2: 

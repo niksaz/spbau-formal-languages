@@ -160,4 +160,4 @@ Sign = "+" | "-"
 }
 
 /* Error fallback */
-[^]                         { throw new LexerException("Illegal character <" + yytext() + ">", yyline, yycolumn); }
+[^]                         { throw new LexerException("Unexpected character <" + yytext() + ">", yyline, yycolumn); }
