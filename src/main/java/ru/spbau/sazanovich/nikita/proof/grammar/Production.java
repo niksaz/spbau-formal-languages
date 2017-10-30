@@ -3,24 +3,34 @@ package ru.spbau.sazanovich.nikita.proof.grammar;
 import java.util.List;
 
 public class Production {
-
   private final Symbol trigger;
 
-  private final List<Symbol> result;
+  private final List<Symbol> products;
 
-  public Production(Symbol trigger, List<Symbol> result) {
+  Production(Symbol trigger, List<Symbol> products) {
     if (trigger.isTerminal()) {
       throw new IllegalArgumentException("Trigger symbol is not a terminal: " + trigger);
     }
+    if (products.isEmpty()) {
+      throw new IllegalArgumentException("Empty result for production!");
+    }
     this.trigger = trigger;
-    this.result = result;
+    this.products = products;
   }
 
-  public Symbol getTrigger() {
+  Symbol getTrigger() {
     return trigger;
   }
 
-  public List<Symbol> getResult() {
-    return result;
+  public List<Symbol> getProducts() {
+    return products;
+  }
+
+  @Override
+  public String toString() {
+    return "Production{" +
+        "trigger=" + trigger +
+        ", products=" + products +
+        '}';
   }
 }
