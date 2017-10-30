@@ -25,7 +25,7 @@ public class Symbol {
   }
 
   boolean isTerminal() {
-    return label == 0 || Character.isLowerCase(label);
+    return Character.isLowerCase(label);
   }
 
   @Override

@@ -1,4 +1,7 @@
 digraph {
+    0 [color="red"]
+    3 [color="green"]
+
     0 -> 1
     1 -> 2 [label="b"]
     2 -> 3 [label="b"]

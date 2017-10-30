@@ -1,6 +1,7 @@
 package ru.spbau.sazanovich.nikita.proof;
 
 import guru.nidi.graphviz.model.MutableGraph;
+import guru.nidi.graphviz.model.MutableNode;
 import guru.nidi.graphviz.parse.Parser;
 import ru.spbau.sazanovich.nikita.proof.grammar.ContextFreeGrammar;
 import ru.spbau.sazanovich.nikita.proof.grammar.ContextFreeGrammarParser;
@@ -16,6 +17,12 @@ public class Main {
   public static void main(String[] args) throws IOException {
     MutableGraph automaton =
         Parser.read(new FileInputStream("src/test/resources/automaton.dot"));
+
+    for (MutableNode node : automaton.nodes()) {
+      System.out.println(node.attrs());
+    }
+    System.out.println();
+
     ContextFreeGrammar grammar =
         ContextFreeGrammarParser.read(new FileInputStream("src/test/resources/grammar.txt"));
 

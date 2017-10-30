@@ -44,6 +44,9 @@ public final class ContextFreeGrammarParser {
         grammar.addProduction(new Production(trigger, result));
       }
     }
+    if (grammar.getInitial() == null) {
+      throw new ParsingException("Initial nonterminal is not specified.");
+    }
     return grammar;
   }
 }
