@@ -22,8 +22,26 @@ public class Production {
     return trigger;
   }
 
-  public List<Symbol> getProducts() {
+  List<Symbol> getProducts() {
     return products;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Production that = (Production) o;
+
+    if (trigger != null ? !trigger.equals(that.trigger) : that.trigger != null) return false;
+    return products != null ? products.equals(that.products) : that.products == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = trigger != null ? trigger.hashCode() : 0;
+    result = 31 * result + (products != null ? products.hashCode() : 0);
+    return result;
   }
 
   @Override

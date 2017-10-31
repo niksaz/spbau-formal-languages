@@ -10,10 +10,10 @@ public class Symbol {
     if (label.length() != 1 && !label.equals(EPS_TEXT)) {
       throw new IllegalArgumentException("Symbol's length > 1");
     }
-    return internalGetSymbolFor(label);
+    return getInternalSymbolFor(label);
   }
 
-  private static Symbol internalGetSymbolFor(@NotNull String label) {
+  static Symbol getInternalSymbolFor(@NotNull String label) {
     if (label.equals(EPS_TEXT)) {
       return EPS;
     }
@@ -32,7 +32,7 @@ public class Symbol {
     this.label = label;
   }
 
-  public String getLabel() {
+  String getLabel() {
     return label;
   }
 
@@ -58,7 +58,7 @@ public class Symbol {
   @Override
   public String toString() {
     return "Symbol{" +
-        "label='" + label + '\'' +
+        "label='" + (this.equals(EPS) ? EPS_TEXT : label) + '\'' +
         '}';
   }
 }
