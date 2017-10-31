@@ -1,31 +1,43 @@
 package ru.spbau.sazanovich.nikita.proof.grammar;
 
-public class Symbol {
-  private static final Symbol EPS = new Symbol((char)0);
+import org.jetbrains.annotations.NotNull;
 
-  static Symbol getSymbolFor(String label) {
-    if (label.equals("eps")) {
-      return EPS;
+public class Symbol {
+  private static final Symbol EPS = new Symbol("");
+  private static final String EPS_TEXT = "eps";
+
+  static Symbol getSymbolFor(@NotNull String label) {
+    if (label.length() != 1 && !label.equals(EPS_TEXT)) {
+      throw new IllegalArgumentException("Symbol's length > 1");
     }
-    if (label.length() != 1) {
-      throw new IllegalArgumentException("Symbol is not a letter: " + label);
-    }
-    // TODO(niksaz): Cache Symbols for characters.
-    return new Symbol(label.charAt(0));
+    return internalGetSymbolFor(label);
   }
 
-  private final char label;
+  private static Symbol internalGetSymbolFor(@NotNull String label) {
+    if (label.equals(EPS_TEXT)) {
+      return EPS;
+    }
+    if ((label.length() == 1 && Character.isLowerCase(label.charAt(0)))
+        || label.toUpperCase().equals(label)) {
+      // TODO(niksaz): Cache Symbols.
+      return new Symbol(label);
+    } else {
+      throw new IllegalArgumentException("Illegal label for Symbol: " + label);
+    }
+  }
 
-  private Symbol(char label) {
+  private final String label;
+
+  private Symbol(String label) {
     this.label = label;
   }
 
-  public char getLabel() {
+  public String getLabel() {
     return label;
   }
 
   boolean isTerminal() {
-    return Character.isLowerCase(label);
+    return label.length() == 1 && Character.isLowerCase(label.charAt(0));
   }
 
   @Override
@@ -35,18 +47,18 @@ public class Symbol {
 
     Symbol symbol = (Symbol) o;
 
-    return label == symbol.label;
+    return label != null ? label.equals(symbol.label) : symbol.label == null;
   }
 
   @Override
   public int hashCode() {
-    return (int) label;
+    return label != null ? label.hashCode() : 0;
   }
 
   @Override
   public String toString() {
     return "Symbol{" +
-        "label=" + label +
+        "label='" + label + '\'' +
         '}';
   }
 }

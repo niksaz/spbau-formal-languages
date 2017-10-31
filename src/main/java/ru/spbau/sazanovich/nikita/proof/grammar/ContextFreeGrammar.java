@@ -24,4 +24,12 @@ public class ContextFreeGrammar {
     symbolProductionMap.putIfAbsent(trigger, new ArrayList<>());
     symbolProductionMap.get(trigger).add(production);
   }
+
+  public ContextFreeGrammar toChomskyNormalForm() {
+    return this.removeLongProductions();
+  }
+
+  private ContextFreeGrammar removeLongProductions() {
+    return this;
+  }
 }
