@@ -10,25 +10,26 @@ import static com.google.common.truth.Truth.assertThat;
 public class ContextFreeGrammarTest {
   @Test
   public void removeLongProductions() throws Exception {
-    ContextFreeGrammar longGrammar = new ContextFreeGrammar();
+    ContextFreeGrammar grammar = new ContextFreeGrammar();
     Symbol aNonterminal = Symbol.getSymbolFor("A");
     Symbol bNonterminal = Symbol.getSymbolFor("B");
     Symbol cNonterminal = Symbol.getSymbolFor("C");
+    Symbol eps = Symbol.getSymbolFor("eps");
     Symbol aTerminal = Symbol.getSymbolFor("a");
     Symbol bTerminal = Symbol.getSymbolFor("b");
     Symbol cTerminal = Symbol.getSymbolFor("c");
-    longGrammar.setInitial(aNonterminal);
-    longGrammar.addProduction(
+    grammar.setInitial(aNonterminal);
+    grammar.addProduction(
         new Production(aNonterminal, Arrays.asList(aTerminal, bNonterminal, bTerminal)));
-    longGrammar.addProduction(
+    grammar.addProduction(
         new Production(bNonterminal, Collections.singletonList(cNonterminal)));
-    longGrammar.addProduction(
+    grammar.addProduction(
         new Production(bNonterminal, Arrays.asList(aTerminal, bNonterminal, bTerminal)));
-    longGrammar.addProduction(
+    grammar.addProduction(
         new Production(cNonterminal, Arrays.asList(cTerminal, cNonterminal)));
-    longGrammar.addProduction(
-        new Production(cNonterminal, Collections.singletonList(Symbol.getSymbolFor("eps"))));
-    ContextFreeGrammar shortGrammar = longGrammar.removeLongProductions();
+    grammar.addProduction(
+        new Production(cNonterminal, Collections.singletonList(eps)));
+    ContextFreeGrammar shortGrammar = grammar.removeLongProductions();
 
     ContextFreeGrammar expectedGrammar = new ContextFreeGrammar();
     expectedGrammar.setInitial(aNonterminal);
@@ -47,8 +48,53 @@ public class ContextFreeGrammarTest {
     expectedGrammar.addProduction(
         new Production(cNonterminal, Arrays.asList(cTerminal, cNonterminal)));
     expectedGrammar.addProduction(
-        new Production(cNonterminal, Collections.singletonList(Symbol.getSymbolFor("eps"))));
-
+        new Production(cNonterminal, Collections.singletonList(eps)));
     assertThat(shortGrammar).isEqualTo(expectedGrammar);
+  }
+
+  @Test
+  public void removeEpsProductions() throws Exception {
+    ContextFreeGrammar grammar = new ContextFreeGrammar();
+    Symbol aNonterminal = Symbol.getSymbolFor("A");
+    Symbol bNonterminal = Symbol.getSymbolFor("B");
+    Symbol cNonterminal = Symbol.getSymbolFor("C");
+    Symbol eps = Symbol.getSymbolFor("eps");
+    Symbol bTerminal = Symbol.getSymbolFor("b");
+    Symbol cTerminal = Symbol.getSymbolFor("c");
+    grammar.setInitial(aNonterminal);
+    grammar.addProduction(
+        new Production(aNonterminal, Arrays.asList(bNonterminal, cNonterminal, bNonterminal)));
+    grammar.addProduction(
+        new Production(aNonterminal, Collections.singletonList(bNonterminal)));
+    grammar.addProduction(
+        new Production(bNonterminal, Collections.singletonList(bTerminal)));
+    grammar.addProduction(
+        new Production(bNonterminal, Collections.singletonList(eps)));
+    grammar.addProduction(
+        new Production(cNonterminal, Collections.singletonList(cTerminal)));
+    ContextFreeGrammar epsFreeGrammar = grammar.removeEpsProductions();
+
+    ContextFreeGrammar expectedGrammar = new ContextFreeGrammar();
+    Symbol aStrokeNonterminal = Symbol.getInternalSymbolFor("A'");
+    expectedGrammar.setInitial(aStrokeNonterminal);
+    expectedGrammar.addProduction(
+        new Production(aStrokeNonterminal, Collections.singletonList(eps)));
+    expectedGrammar.addProduction(
+        new Production(aStrokeNonterminal, Collections.singletonList(aNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(aNonterminal, Arrays.asList(bNonterminal, cNonterminal, bNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(aNonterminal, Arrays.asList(cNonterminal, bNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(aNonterminal, Arrays.asList(bNonterminal, cNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(aNonterminal, Collections.singletonList(cNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(aNonterminal, Collections.singletonList(bNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(bNonterminal, Collections.singletonList(bTerminal)));
+    expectedGrammar.addProduction(
+        new Production(cNonterminal, Collections.singletonList(cTerminal)));
+    assertThat(epsFreeGrammar).isEqualTo(expectedGrammar);
   }
 }

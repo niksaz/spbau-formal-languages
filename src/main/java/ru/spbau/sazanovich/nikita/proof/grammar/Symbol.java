@@ -3,7 +3,7 @@ package ru.spbau.sazanovich.nikita.proof.grammar;
 import org.jetbrains.annotations.NotNull;
 
 public class Symbol {
-  private static final Symbol EPS = new Symbol("");
+  static final Symbol EPS = new Symbol("");
   private static final String EPS_TEXT = "eps";
 
   static Symbol getSymbolFor(@NotNull String label) {

@@ -54,7 +54,8 @@ public class ContextFreeGrammar {
   }
 
   public ContextFreeGrammar toChomskyNormalForm() {
-    return this.removeLongProductions();
+    ContextFreeGrammar shortGrammar = removeLongProductions();
+    return shortGrammar.removeEpsProductions();
   }
 
   @VisibleForTesting
@@ -91,5 +92,88 @@ public class ContextFreeGrammar {
       }
     });
     return shortGrammar;
+  }
+
+  @VisibleForTesting
+  ContextFreeGrammar removeEpsProductions() {
+    Map<Symbol, Boolean> isEpsGenerating = new HashMap<>();
+    isEpsGenerating.put(Symbol.EPS, true);
+    getSymbolProductionMap().forEach((trigger, productions) ->
+        computeEpsGenerating(trigger, isEpsGenerating)
+    );
+
+    ContextFreeGrammar epsFreeGrammar = new ContextFreeGrammar();
+    if (isEpsGenerating.get(getInitial())) {
+      Symbol initialWithEps = Symbol.getInternalSymbolFor(getInitial().getLabel() + "'");
+      epsFreeGrammar.addProduction(
+          new Production(initialWithEps, Collections.singletonList(Symbol.EPS)));
+      epsFreeGrammar.addProduction(
+          new Production(initialWithEps, Collections.singletonList(getInitial())));
+      epsFreeGrammar.setInitial(initialWithEps);
+    } else {
+      epsFreeGrammar.setInitial(getInitial());
+    }
+    getSymbolProductionMap().forEach((trigger, productions) -> {
+      List<Symbol> products = new ArrayList<>();
+      for (Production production : productions) {
+        generateNonEpsProductions(products, 0, production, isEpsGenerating,
+            epsFreeGrammar);
+      }
+    });
+    return epsFreeGrammar;
+  }
+
+  private boolean computeEpsGenerating(Symbol symbol, Map<Symbol, Boolean> isEpsGenerating) {
+    Boolean computedResult = isEpsGenerating.get(symbol);
+    if (computedResult != null) {
+      return computedResult;
+    }
+    boolean epsGenerating = false;
+    Set<Production> productions = getSymbolProductionMap().get(symbol);
+    if (productions != null) {
+      for (Production production : productions) {
+        boolean allEpsGenerating = true;
+        for (Symbol productSymbol : production.getProducts()) {
+          allEpsGenerating = computeEpsGenerating(productSymbol, isEpsGenerating);
+          if (!allEpsGenerating) {
+            break;
+          }
+        }
+        epsGenerating = allEpsGenerating;
+        if (epsGenerating) {
+          break;
+        }
+      }
+    }
+    isEpsGenerating.put(symbol, epsGenerating);
+    return epsGenerating;
+  }
+
+  private void generateNonEpsProductions(
+      List<Symbol> takenProducts,
+      int index,
+      Production production,
+      Map<Symbol, Boolean> isEpsGenerating,
+      ContextFreeGrammar epsFreeGrammar) {
+    List<Symbol> products = production.getProducts();
+    if (index == products.size()) {
+      // Should not add rules like A -> eps.
+      if (!(takenProducts.isEmpty() || takenProducts.get(0).equals(Symbol.EPS))) {
+        epsFreeGrammar.addProduction(
+            new Production(production.getTrigger(), new ArrayList<>(takenProducts)));
+      }
+      return;
+    }
+    Symbol currentSymbol = products.get(index);
+    // May we skip it? If it is an eps generating symbol, then we can.
+    if (Boolean.TRUE.equals(isEpsGenerating.get(currentSymbol))) {
+      generateNonEpsProductions(
+          takenProducts, index + 1, production, isEpsGenerating, epsFreeGrammar);
+    }
+    // Do not skip it.
+    takenProducts.add(currentSymbol);
+    generateNonEpsProductions(
+        takenProducts, index + 1, production, isEpsGenerating, epsFreeGrammar);
+    takenProducts.remove(takenProducts.size() - 1);
   }
 }
