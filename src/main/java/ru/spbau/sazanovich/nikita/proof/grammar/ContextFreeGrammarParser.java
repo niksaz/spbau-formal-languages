@@ -49,4 +49,6 @@ public final class ContextFreeGrammarParser {
     }
     return grammar;
   }
+
+  private ContextFreeGrammarParser() {}
 }

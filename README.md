@@ -18,12 +18,17 @@ For example:
 digraph {
     0 [color="red"]
     3 [color="green"]
+    4 [color="green"]
+    5 [color="green"]
 
-    0 -> 1
-    1 -> 2 [label="b"]
-    2 -> 3 [label="b"]
-    1 -> 3 [label="c"]
+    0 -> 1 [label="a"]
+    1 -> 2 [label="a"]
+    1 -> 3 [label="b"]
+    2 -> 3 [label="c"]
+    3 -> 4 [label="b"]
+    4 -> 5 [label="b"]
 }
+
 ```
 
 ### Context-free grammar's format

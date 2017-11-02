@@ -2,6 +2,7 @@ package ru.spbau.sazanovich.nikita.proof.grammar;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import java.io.PrintStream;
 import java.util.*;
 
 public class ContextFreeGrammar {
@@ -9,19 +10,19 @@ public class ContextFreeGrammar {
 
   private Symbol initial;
 
-  void setInitial(Symbol initial) {
-    this.initial = initial;
-  }
-
-  private Map<Symbol, Set<Production>> getSymbolProductionMap() {
-    return symbolProductionMap;
-  }
-
-  Symbol getInitial() {
+  public Symbol getInitial() {
     return initial;
   }
 
-  void addProduction(Production production) {
+  public void setInitial(Symbol initial) {
+    this.initial = initial;
+  }
+
+  public Map<Symbol, Set<Production>> getSymbolProductionMap() {
+    return symbolProductionMap;
+  }
+
+  public void addProduction(Production production) {
     Symbol trigger = production.getTrigger();
     symbolProductionMap.putIfAbsent(trigger, new HashSet<>());
     symbolProductionMap.get(trigger).add(production);
@@ -51,6 +52,38 @@ public class ContextFreeGrammar {
         "symbolProductionMap=" + symbolProductionMap +
         ", initial=" + initial +
         '}';
+  }
+
+  public void printTo(PrintStream printStream) {
+    // Need to process the initial symbol separately because an initial symbol should be a first
+    // rule.
+    Symbol initial = getInitial();
+    Set<Production> initialProductions = getSymbolProductionMap().get(initial);
+    if (initialProductions == null || initialProductions.isEmpty()) {
+      // Should print something to indicate that this symbol is initial.
+      printStream.print(initial.getLabel());
+      printStream.print(": ");
+      printStream.println(initial.getLabel());
+    } else {
+      printProductions(printStream, initialProductions);
+    }
+    getSymbolProductionMap().forEach((trigger, productions) -> {
+      if (!trigger.equals(initial)) {
+        printProductions(printStream, productions);
+      }
+    });
+  }
+
+  private static void printProductions(PrintStream printStream, Set<Production> productions) {
+    for (Production production : productions) {
+      printStream.print(production.getTrigger().getLabel());
+      printStream.print(':');
+      for (Symbol product : production.getProducts()) {
+        printStream.print(' ');
+        printStream.print(product.getLabel());
+      }
+      printStream.println();
+    }
   }
 
   public ContextFreeGrammar toChomskyNormalForm() {

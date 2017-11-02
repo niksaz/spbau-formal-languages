@@ -6,14 +6,14 @@ public class Symbol {
   static final Symbol EPS = new Symbol("");
   private static final String EPS_TEXT = "eps";
 
-  static Symbol getSymbolFor(@NotNull String label) {
+  public static Symbol getSymbolFor(@NotNull String label) {
     if (label.length() != 1 && !label.equals(EPS_TEXT)) {
       throw new IllegalArgumentException("Symbol's length > 1");
     }
     return getInternalSymbolFor(label);
   }
 
-  static Symbol getInternalSymbolFor(@NotNull String label) {
+  public static Symbol getInternalSymbolFor(@NotNull String label) {
     if (label.equals(EPS_TEXT)) {
       return EPS;
     }
@@ -32,11 +32,11 @@ public class Symbol {
     this.label = label;
   }
 
-  String getLabel() {
+  public String getLabel() {
     return label;
   }
 
-  boolean isTerminal() {
+  public boolean isTerminal() {
     return label.length() == 1 && Character.isLowerCase(label.charAt(0));
   }
 

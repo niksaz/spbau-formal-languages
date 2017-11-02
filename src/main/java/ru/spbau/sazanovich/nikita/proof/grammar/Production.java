@@ -7,7 +7,7 @@ public class Production {
 
   private final List<Symbol> products;
 
-  Production(Symbol trigger, List<Symbol> products) {
+  public Production(Symbol trigger, List<Symbol> products) {
     if (trigger.isTerminal()) {
       throw new IllegalArgumentException("Trigger symbol is not a terminal: " + trigger);
     }
@@ -22,7 +22,7 @@ public class Production {
     return trigger;
   }
 
-  List<Symbol> getProducts() {
+  public List<Symbol> getProducts() {
     return products;
   }
 
