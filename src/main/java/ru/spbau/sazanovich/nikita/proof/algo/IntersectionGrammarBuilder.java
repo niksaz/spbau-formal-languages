@@ -36,7 +36,11 @@ public final class IntersectionGrammarBuilder {
     }
     intersectionGrammar = new ContextFreeGrammar();
     generateInitialProductions();
+    generateSingleLetterProductions();
+    return intersectionGrammar;
+  }
 
+  private void generateSingleLetterProductions() {
     Map<String, Set<Symbol>> terminals = computeTerminals();
     Collection<MutableNode> nodes = automaton.nodes();
     for (MutableNode node : nodes) {
@@ -45,18 +49,36 @@ public final class IntersectionGrammarBuilder {
         MutableNode nodeS = linkFromNode(link);
         MutableNode nodeF = linkToNode(link);
         for (Symbol symbol : terminals.get(label)) {
-          reachState(State.of(nodeS, symbol, nodeF));
+          State state = State.of(nodeS, symbol, nodeF);
+          addStateFrom(state, null, null);
+          intersectionGrammar.addProduction(
+              new Production(
+                  Symbol.getInternalSymbolFor(state.toString()),
+                  Collections.singletonList(Symbol.getSymbolFor(label)))
+          );
         }
       }
     }
-    return intersectionGrammar;
   }
 
-  private void reachState(State state) {
+  /** Returns the {@code true} if the provided state is added first time. */
+  private void addStateFrom(
+      @NotNull State state,
+      @Nullable State leftState,
+      @Nullable State rightState) {
+    if (leftState != null && rightState != null) {
+      intersectionGrammar.addProduction(
+          new Production(
+              Symbol.getInternalSymbolFor(state.toString()),
+              Arrays.asList(
+                  Symbol.getInternalSymbolFor(leftState.toString()),
+                  Symbol.getInternalSymbolFor(rightState.toString())))
+      );
+    }
     if (!states.contains(state)) {
       states.add(state);
       stateQueue.add(state);
-      System.out.println("Added " + state);
+      System.out.println("# added " + state);
     }
   }
 
@@ -71,7 +93,8 @@ public final class IntersectionGrammarBuilder {
       intersectionGrammar.addProduction(
           new Production(
               intersectionInitialNode,
-              Collections.singletonList(Symbol.getInternalSymbolFor(state.toString()))));
+              Collections.singletonList(Symbol.getInternalSymbolFor(state.toString())))
+      );
     }
   }
 
