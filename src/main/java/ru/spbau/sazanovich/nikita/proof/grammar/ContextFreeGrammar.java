@@ -55,7 +55,9 @@ public class ContextFreeGrammar {
 
   public ContextFreeGrammar toChomskyNormalForm() {
     ContextFreeGrammar shortGrammar = removeLongProductions();
-    return shortGrammar.removeEpsProductions();
+    ContextFreeGrammar epsFreeGrammar = shortGrammar.removeEpsProductions();
+    ContextFreeGrammar chainFreeGrammar = epsFreeGrammar.removeChainProductions();
+    return chainFreeGrammar.removeNonterminalsInLongProductions();
   }
 
   @VisibleForTesting
@@ -175,5 +177,100 @@ public class ContextFreeGrammar {
     generateNonEpsProductions(
         takenProducts, index + 1, production, isEpsGenerating, epsFreeGrammar);
     takenProducts.remove(takenProducts.size() - 1);
+  }
+
+  @VisibleForTesting
+  ContextFreeGrammar removeChainProductions() {
+    ContextFreeGrammar chainFreeGrammar = new ContextFreeGrammar();
+    chainFreeGrammar.setInitial(getInitial());
+    // We will build a graph only for Symbols which have some production rules in the grammar.
+    // Others are meaningless.
+    List<Symbol> meaningfulSymbols = new ArrayList<>(getSymbolProductionMap().keySet());
+    int n = meaningfulSymbols.size();
+    boolean chainProductionable[][] = new boolean[n][];
+    for (int i = 0; i < n; i++) {
+      chainProductionable[i] = new boolean[n];
+    }
+    getSymbolProductionMap().forEach((trigger, productions) -> {
+      int triggerIndex = meaningfulSymbols.indexOf(trigger);
+      for (Production production : productions) {
+        List<Symbol> products = production.getProducts();
+        if (products.size() != 1) {
+          chainFreeGrammar.addProduction(production);
+          continue;
+        }
+        Symbol product = products.get(0);
+        int productIndex = meaningfulSymbols.indexOf(product);
+        if (productIndex == -1) {
+          chainFreeGrammar.addProduction(production);
+          continue;
+        }
+        chainProductionable[triggerIndex][productIndex] = true;
+      }
+    });
+    closeTransitively(chainProductionable);
+    getSymbolProductionMap().forEach((trigger, triggerProductions) -> {
+      int triggerIndex = meaningfulSymbols.indexOf(trigger);
+      for (int productIndex = 0; productIndex < n; productIndex++) {
+        if (chainProductionable[triggerIndex][productIndex]) {
+          Symbol product = meaningfulSymbols.get(productIndex);
+          Set<Production> chainProductions = getSymbolProductionMap().get(product);
+          for (Production production : chainProductions) {
+            List<Symbol> chainProducts = production.getProducts();
+            if (chainProducts.size() != 1) {
+              continue;
+            }
+            Symbol chainProduct = chainProducts.get(0);
+            if (chainProduct.isTerminal()) {
+              chainFreeGrammar.addProduction(
+                  new Production(trigger, Collections.singletonList(chainProduct)));
+            }
+          }
+        }
+      }
+    });
+    return chainFreeGrammar;
+  }
+
+  @VisibleForTesting
+  ContextFreeGrammar removeNonterminalsInLongProductions() {
+    ContextFreeGrammar resultGrammar = new ContextFreeGrammar();
+    resultGrammar.setInitial(getInitial());
+    Set<Symbol> introducedSymbols = new HashSet<>();
+    getSymbolProductionMap().forEach((trigger, productions) -> {
+      for (Production production : productions) {
+        List<Symbol> products = production.getProducts();
+        if (products.size() == 1) {
+          continue;
+        }
+        List<Symbol> transformedProducts = new ArrayList<>();
+        for (Symbol product : products) {
+          if (product.isTerminal()) {
+            Symbol newSymbol = Symbol.getInternalSymbolFor(product.getLabel().toUpperCase() + "L");
+            if (!introducedSymbols.contains(newSymbol)) {
+              introducedSymbols.add(newSymbol);
+              resultGrammar.addProduction(
+                  new Production(newSymbol, Collections.singletonList(product)));
+            }
+            transformedProducts.add(newSymbol);
+          } else {
+            transformedProducts.add(product);
+          }
+        }
+        resultGrammar.addProduction(new Production(trigger, transformedProducts));
+      }
+    });
+    return resultGrammar;
+  }
+
+  private static void closeTransitively(boolean[][] g) {
+    int n = g.length;
+    for (int k = 0; k < n; k++) {
+      for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+          g[i][j] |= g[i][k] & g[k][j];
+        }
+      }
+    }
   }
 }
