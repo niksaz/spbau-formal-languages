@@ -64,6 +64,7 @@ For example:
 
 ```
 A: a B b
+A: C
 B: C
 B: a B b
 C: c C
