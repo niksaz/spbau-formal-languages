@@ -3,6 +3,21 @@
 Proof of "An intersection of a context-free grammar and an automaton is a context-free
 grammar".
 
+
+### How to build?
+Run the following to build thr jar file for the prover:
+```
+./gradlew jar
+```
+Then you will find the jar at **./build/libs/prover-1.0.jar**.
+
+### How to run?
+Run the aforementioned jar file. It expects that it will be run like this: 
+```
+java -jar prover-1.0.jar automatonPath grammarPath outputPath
+```
+
+
 ### Automaton's format
 
 It is given in

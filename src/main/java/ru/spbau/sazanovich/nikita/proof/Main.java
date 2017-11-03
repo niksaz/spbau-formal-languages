@@ -15,7 +15,7 @@ public class Main {
   public static void main(String[] args) {
     if (args.length != 3) {
       System.out.println(
-          "Incorrect number of arguments.There should 3 arguments: " +
+          "Incorrect number of arguments. There should 3 arguments: " +
           "automatonPath grammarPath outputPath");
       return;
     }
