@@ -5,18 +5,18 @@ grammar".
 
 
 ### How to build?
-Run the following to build thr jar file for the prover:
+Run the following to build the jar file for the prover:
 ```
 ./gradlew jar
 ```
-Then you will find the jar at **./build/libs/prover-1.0.jar**.
+You will be able to find the jar at **./build/libs/prover-1.0.jar**.
 
 ### How to run?
 Run the aforementioned jar file. It expects that it will be run like this: 
 ```
 java -jar prover-1.0.jar automatonPath grammarPath outputPath
 ```
-
+For testing you could use an automaton and a grammar in the **./src/test/resources/**.
 
 ### Automaton's format
 
