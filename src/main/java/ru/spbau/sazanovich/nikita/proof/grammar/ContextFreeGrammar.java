@@ -35,8 +35,8 @@ public class ContextFreeGrammar {
 
     ContextFreeGrammar grammar = (ContextFreeGrammar) o;
 
-    if (!symbolProductionMap.equals(grammar.symbolProductionMap)) return false;
-    return initial != null ? initial.equals(grammar.initial) : grammar.initial == null;
+    return symbolProductionMap.equals(grammar.symbolProductionMap)
+        && (initial != null ? initial.equals(grammar.initial) : grammar.initial == null);
   }
 
   @Override

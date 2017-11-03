@@ -97,4 +97,94 @@ public class ContextFreeGrammarTest {
         new Production(cNonterminal, Collections.singletonList(cTerminal)));
     assertThat(epsFreeGrammar).isEqualTo(expectedGrammar);
   }
+
+  @Test
+  public void removeChainProductions() throws Exception {
+    ContextFreeGrammar grammar = new ContextFreeGrammar();
+    Symbol aNonterminal = Symbol.getSymbolFor("A");
+    Symbol bNonterminal = Symbol.getSymbolFor("B");
+    Symbol cNonterminal = Symbol.getSymbolFor("C");
+    Symbol bTerminal = Symbol.getSymbolFor("b");
+    Symbol cTerminal = Symbol.getSymbolFor("c");
+    grammar.setInitial(aNonterminal);
+    grammar.addProduction(
+        new Production(aNonterminal, Arrays.asList(aNonterminal, bNonterminal)));
+    grammar.addProduction(
+        new Production(aNonterminal, Collections.singletonList(cNonterminal)));
+    grammar.addProduction(
+        new Production(cNonterminal, Collections.singletonList(cTerminal)));
+    grammar.addProduction(
+        new Production(cNonterminal, Arrays.asList(cTerminal, cNonterminal)));
+    grammar.addProduction(
+        new Production(cNonterminal, Collections.singletonList(bNonterminal)));
+    grammar.addProduction(
+        new Production(bNonterminal, Collections.singletonList(bTerminal)));
+    ContextFreeGrammar chainFreeGrammar = grammar.removeChainProductions();
+
+    ContextFreeGrammar expectedGrammar = new ContextFreeGrammar();
+    expectedGrammar.setInitial(aNonterminal);
+    expectedGrammar.addProduction(
+        new Production(aNonterminal, Arrays.asList(aNonterminal, bNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(aNonterminal, Collections.singletonList(cTerminal)));
+    expectedGrammar.addProduction(
+        new Production(aNonterminal, Arrays.asList(cTerminal, cNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(aNonterminal, Collections.singletonList(bTerminal)));
+    expectedGrammar.addProduction(
+        new Production(cNonterminal, Collections.singletonList(cTerminal)));
+    expectedGrammar.addProduction(
+        new Production(cNonterminal, Arrays.asList(cTerminal, cNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(cNonterminal, Collections.singletonList(bTerminal)));
+    expectedGrammar.addProduction(
+        new Production(bNonterminal, Collections.singletonList(bTerminal)));
+    assertThat(chainFreeGrammar).isEqualTo(expectedGrammar);
+  }
+
+  @Test
+  public void removeNonterminalsInLongProductions() throws Exception {
+    ContextFreeGrammar grammar = new ContextFreeGrammar();
+    Symbol aNonterminal = Symbol.getSymbolFor("A");
+    Symbol bNonterminal = Symbol.getSymbolFor("B");
+    Symbol cNonterminal = Symbol.getSymbolFor("C");
+    Symbol aTerminal = Symbol.getSymbolFor("a");
+    Symbol bTerminal = Symbol.getSymbolFor("b");
+    Symbol cTerminal = Symbol.getSymbolFor("c");
+    grammar.setInitial(aNonterminal);
+    grammar.addProduction(
+        new Production(aNonterminal, Arrays.asList(aTerminal, bNonterminal, bTerminal)));
+    grammar.addProduction(
+        new Production(bNonterminal, Collections.singletonList(cNonterminal)));
+    grammar.addProduction(
+        new Production(bNonterminal, Arrays.asList(aTerminal, bNonterminal, bTerminal)));
+    grammar.addProduction(
+        new Production(cNonterminal, Arrays.asList(cTerminal, cNonterminal)));
+    grammar.addProduction(
+        new Production(cNonterminal, Collections.singletonList(cTerminal)));
+    ContextFreeGrammar resultGrammar = grammar.removeNonterminalsInLongProductions();
+
+    ContextFreeGrammar expectedGrammar = new ContextFreeGrammar();
+    expectedGrammar.setInitial(aNonterminal);
+    Symbol aLNonterminal = Symbol.getInternalSymbolFor("AL");
+    Symbol bLNonterminal = Symbol.getInternalSymbolFor("BL");
+    Symbol cLNonterminal = Symbol.getInternalSymbolFor("CL");
+    expectedGrammar.addProduction(
+        new Production(aNonterminal, Arrays.asList(aLNonterminal, bNonterminal, bLNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(bNonterminal, Collections.singletonList(cNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(bNonterminal, Arrays.asList(aLNonterminal, bNonterminal, bLNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(cNonterminal, Arrays.asList(cLNonterminal, cNonterminal)));
+    expectedGrammar.addProduction(
+        new Production(cNonterminal, Collections.singletonList(cTerminal)));
+    expectedGrammar.addProduction(
+        new Production(aLNonterminal, Collections.singletonList(aTerminal)));
+    expectedGrammar.addProduction(
+        new Production(bLNonterminal, Collections.singletonList(bTerminal)));
+    expectedGrammar.addProduction(
+        new Production(cLNonterminal, Collections.singletonList(cTerminal)));
+    assertThat(resultGrammar).isEqualTo(expectedGrammar);
+  }
 }
