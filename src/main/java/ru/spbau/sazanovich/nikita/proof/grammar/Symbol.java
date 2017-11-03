@@ -7,13 +7,6 @@ public class Symbol {
   public static final Symbol EPS = new Symbol(EPS_TEXT);
 
   public static Symbol getSymbolFor(@NotNull String label) {
-    if (label.length() != 1 && !label.equals(EPS_TEXT)) {
-      throw new IllegalArgumentException("Symbol's length > 1");
-    }
-    return getInternalSymbolFor(label);
-  }
-
-  public static Symbol getInternalSymbolFor(@NotNull String label) {
     if (label.equals(EPS_TEXT)) {
       return EPS;
     }

@@ -108,7 +108,7 @@ public final class IntersectionGrammarBuilder {
           reachStateFrom(state, null, null);
           intersectionGrammar.addProduction(
               new Production(
-                  Symbol.getInternalSymbolFor(state.toString()),
+                  Symbol.getSymbolFor(state.toString()),
                   Collections.singletonList(Symbol.getSymbolFor(label)))
           );
         }
@@ -142,10 +142,10 @@ public final class IntersectionGrammarBuilder {
     if (leftState != null && rightState != null) {
       intersectionGrammar.addProduction(
           new Production(
-              Symbol.getInternalSymbolFor(state.toString()),
+              Symbol.getSymbolFor(state.toString()),
               Arrays.asList(
-                  Symbol.getInternalSymbolFor(leftState.toString()),
-                  Symbol.getInternalSymbolFor(rightState.toString())))
+                  Symbol.getSymbolFor(leftState.toString()),
+                  Symbol.getSymbolFor(rightState.toString())))
       );
     }
     if (!states.contains(state)) {
@@ -173,7 +173,7 @@ public final class IntersectionGrammarBuilder {
     List<MutableNode> terminalNodes = findTerminalNodes();
     for (MutableNode automatonTerminalNode : terminalNodes) {
       State state = State.of(automatonStartNode, initialNode, automatonTerminalNode);
-      Symbol stateSymbol = Symbol.getInternalSymbolFor(state.toString());
+      Symbol stateSymbol = Symbol.getSymbolFor(state.toString());
       intersectionGrammar.addProduction(
           new Production(intersectionInitialNode, Collections.singletonList(stateSymbol)));
       if (grammarContainsEpsRule && automatonStartNode.equals(automatonTerminalNode)) {

@@ -23,10 +23,8 @@ public class Main {
     String grammarPath = args[1];
     String outputPath = args[2];
     try {
-      MutableGraph automaton =
-          Parser.read(new FileInputStream(automatonPath));
-      ContextFreeGrammar grammar =
-          ContextFreeGrammarParser.read(new FileInputStream(grammarPath));
+      MutableGraph automaton = Parser.read(new FileInputStream(automatonPath));
+      ContextFreeGrammar grammar = ContextFreeGrammarParser.read(new FileInputStream(grammarPath));
       ContextFreeGrammar normalizedGrammar = grammar.toChomskyNormalForm();
 
       IntersectionGrammarBuilder intersectionBuilder =

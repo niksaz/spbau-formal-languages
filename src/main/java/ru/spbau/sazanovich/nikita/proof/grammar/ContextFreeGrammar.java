@@ -109,7 +109,7 @@ public class ContextFreeGrammar {
         List<Symbol> internalTriggers = new ArrayList<>();
         for (int index = 0; index < productsSize - 2; index++) {
           internalTriggers.add(
-              Symbol.getInternalSymbolFor(trigger.getLabel() + internalTriggerNumber++));
+              Symbol.getSymbolFor(trigger.getLabel() + internalTriggerNumber++));
         }
         shortGrammar.addProduction(
             new Production(trigger, Arrays.asList(products.get(0), internalTriggers.get(0))));
@@ -139,7 +139,7 @@ public class ContextFreeGrammar {
 
     ContextFreeGrammar epsFreeGrammar = new ContextFreeGrammar();
     if (isEpsGenerating.get(getInitial())) {
-      Symbol initialWithEps = Symbol.getInternalSymbolFor(getInitial().getLabel() + "'");
+      Symbol initialWithEps = Symbol.getSymbolFor(getInitial().getLabel() + "'");
       epsFreeGrammar.addProduction(
           new Production(initialWithEps, Collections.singletonList(Symbol.EPS)));
       epsFreeGrammar.addProduction(
@@ -276,7 +276,7 @@ public class ContextFreeGrammar {
         List<Symbol> transformedProducts = new ArrayList<>();
         for (Symbol product : products) {
           if (product.isTerminal()) {
-            Symbol newSymbol = Symbol.getInternalSymbolFor(product.getLabel().toUpperCase() + "L");
+            Symbol newSymbol = Symbol.getSymbolFor(product.getLabel().toUpperCase() + "L");
             if (!introducedSymbols.contains(newSymbol)) {
               introducedSymbols.add(newSymbol);
               resultGrammar.addProduction(

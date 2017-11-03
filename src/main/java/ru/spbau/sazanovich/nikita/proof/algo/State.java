@@ -32,7 +32,7 @@ class State {
 
   @Override
   public String toString() {
-    return "[" + nodeS.label() + ", " + symbol.getLabel() + ", " + nodeT.label() + ']';
+    return "[" + nodeS.label() + "," + symbol.getLabel() + "," + nodeT.label() + ']';
   }
 
   @Override
@@ -42,9 +42,9 @@ class State {
 
     State state = (State) o;
 
-    if (nodeS != null ? !nodeS.equals(state.nodeS) : state.nodeS != null) return false;
-    if (symbol != null ? !symbol.equals(state.symbol) : state.symbol != null) return false;
-    return nodeT != null ? nodeT.equals(state.nodeT) : state.nodeT == null;
+    return (nodeS != null ? nodeS.equals(state.nodeS) : state.nodeS == null)
+        && (symbol != null ? symbol.equals(state.symbol) : state.symbol == null)
+        && (nodeT != null ? nodeT.equals(state.nodeT) : state.nodeT == null);
   }
 
   @Override

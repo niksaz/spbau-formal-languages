@@ -33,8 +33,8 @@ public class ContextFreeGrammarTest {
 
     ContextFreeGrammar expectedGrammar = new ContextFreeGrammar();
     expectedGrammar.setInitial(aNonterminal);
-    Symbol a0Nonterminal = Symbol.getInternalSymbolFor("A0");
-    Symbol b0Nonterminal = Symbol.getInternalSymbolFor("B0");
+    Symbol a0Nonterminal = Symbol.getSymbolFor("A0");
+    Symbol b0Nonterminal = Symbol.getSymbolFor("B0");
     expectedGrammar.addProduction(
         new Production(aNonterminal, Arrays.asList(aTerminal, a0Nonterminal)));
     expectedGrammar.addProduction(
@@ -75,7 +75,7 @@ public class ContextFreeGrammarTest {
     ContextFreeGrammar epsFreeGrammar = grammar.removeEpsProductions();
 
     ContextFreeGrammar expectedGrammar = new ContextFreeGrammar();
-    Symbol aStrokeNonterminal = Symbol.getInternalSymbolFor("A'");
+    Symbol aStrokeNonterminal = Symbol.getSymbolFor("A'");
     expectedGrammar.setInitial(aStrokeNonterminal);
     expectedGrammar.addProduction(
         new Production(aStrokeNonterminal, Collections.singletonList(eps)));
@@ -166,9 +166,9 @@ public class ContextFreeGrammarTest {
 
     ContextFreeGrammar expectedGrammar = new ContextFreeGrammar();
     expectedGrammar.setInitial(aNonterminal);
-    Symbol aLNonterminal = Symbol.getInternalSymbolFor("AL");
-    Symbol bLNonterminal = Symbol.getInternalSymbolFor("BL");
-    Symbol cLNonterminal = Symbol.getInternalSymbolFor("CL");
+    Symbol aLNonterminal = Symbol.getSymbolFor("AL");
+    Symbol bLNonterminal = Symbol.getSymbolFor("BL");
+    Symbol cLNonterminal = Symbol.getSymbolFor("CL");
     expectedGrammar.addProduction(
         new Production(aNonterminal, Arrays.asList(aLNonterminal, bNonterminal, bLNonterminal)));
     expectedGrammar.addProduction(
