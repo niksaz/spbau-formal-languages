@@ -18,20 +18,40 @@ class State {
     this.nodeT = nodeT;
   }
 
-  public MutableNode getNodeS() {
+  MutableNode getNodeS() {
     return nodeS;
   }
 
-  public Symbol getSymbol() {
+  Symbol getSymbol() {
     return symbol;
   }
 
-  public MutableNode getNodeT() {
+  MutableNode getNodeT() {
     return nodeT;
   }
 
   @Override
   public String toString() {
     return "[" + nodeS.label() + ", " + symbol.getLabel() + ", " + nodeT.label() + ']';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    State state = (State) o;
+
+    if (nodeS != null ? !nodeS.equals(state.nodeS) : state.nodeS != null) return false;
+    if (symbol != null ? !symbol.equals(state.symbol) : state.symbol != null) return false;
+    return nodeT != null ? nodeT.equals(state.nodeT) : state.nodeT == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = nodeS != null ? nodeS.hashCode() : 0;
+    result = 31 * result + (symbol != null ? symbol.hashCode() : 0);
+    result = 31 * result + (nodeT != null ? nodeT.hashCode() : 0);
+    return result;
   }
 }

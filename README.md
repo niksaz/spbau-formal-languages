@@ -9,17 +9,17 @@ It is given in
 [DOT](https://en.wikipedia.org/wiki/DOT_(graph_description_language)) format. It should
 be a digraph. Every edge should be a letter. Node's name is arbitrary.
 
-Initial and final states are represented by color. Color vertex red for it to be an
-initial state. Green color represents final states.
+Initial and final states are represented by node attributes. 
+Color a node green for it to be an initial state. "doublecircle" shape represents a final state.
 
 For example:
 
 ```
 digraph {
-    0 [color="red"]
-    3 [color="green"]
-    4 [color="green"]
-    5 [color="green"]
+    0 [color="green"]
+    3 [shape="doublecircle"]
+    4 [shape="doublecircle"]
+    5 [shape="doublecircle"]
 
     0 -> 1 [label="a"]
     1 -> 2 [label="a"]
@@ -30,6 +30,8 @@ digraph {
 }
 
 ```
+
+![alt text](examples/example1.png)
 
 ### Context-free grammar's format
 

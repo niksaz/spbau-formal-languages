@@ -250,14 +250,10 @@ public class ContextFreeGrammar {
           Set<Production> chainProductions = getSymbolProductionMap().get(product);
           for (Production production : chainProductions) {
             List<Symbol> chainProducts = production.getProducts();
-            if (chainProducts.size() != 1) {
+            if (chainProducts.size() == 1 && !chainProducts.get(0).isTerminal()) {
               continue;
             }
-            Symbol chainProduct = chainProducts.get(0);
-            if (chainProduct.isTerminal()) {
-              chainFreeGrammar.addProduction(
-                  new Production(trigger, Collections.singletonList(chainProduct)));
-            }
+            chainFreeGrammar.addProduction(new Production(trigger, chainProducts));
           }
         }
       }
@@ -274,6 +270,7 @@ public class ContextFreeGrammar {
       for (Production production : productions) {
         List<Symbol> products = production.getProducts();
         if (products.size() == 1) {
+          resultGrammar.addProduction(production);
           continue;
         }
         List<Symbol> transformedProducts = new ArrayList<>();

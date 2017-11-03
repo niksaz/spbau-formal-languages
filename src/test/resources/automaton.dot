@@ -1,8 +1,8 @@
 digraph {
-    0 [color="red"]
-    3 [color="green"]
-    4 [color="green"]
-    5 [color="green"]
+    0 [color="green"]
+    3 [shape="doublecircle"]
+    4 [shape="doublecircle"]
+    5 [shape="doublecircle"]
 
     0 -> 1 [label="a"]
     1 -> 2 [label="a"]

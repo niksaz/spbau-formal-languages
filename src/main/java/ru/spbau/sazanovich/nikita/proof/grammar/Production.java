@@ -18,7 +18,7 @@ public class Production {
     this.products = products;
   }
 
-  Symbol getTrigger() {
+  public Symbol getTrigger() {
     return trigger;
   }
 
