@@ -2,7 +2,7 @@
 Lexer for L language.
 
 ### How to build?
-Run the following to build the jar file for the prover:
+Run the following to build the jar file for the lexer:
 ```
 ./gradlew jar
 ```
@@ -11,10 +11,10 @@ You will be able to find the jar at **./build/libs/lexer-1.0.jar**.
 ### How to run?
 Run the aforementioned jar file. It expects that it will be run like this: 
 ```
-java -jar lexer-1.0.jar lLanguageSourceFilePath
+java -jar lexer-1.0.jar sourceFilePath
 ```
 
-For example, running from the example file from the root directory:
+For example, running from the root directory the lexer for the example source file:
 ```
 java -jar build/libs/lexer-1.0.jar src/test/resources/example1.lang
 ```
