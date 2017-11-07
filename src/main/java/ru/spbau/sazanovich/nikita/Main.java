@@ -36,5 +36,6 @@ public class Main {
     for (LToken lToken : tokenList) {
       System.out.print(lToken + "; ");
     }
+    System.out.println();
   }
 }
