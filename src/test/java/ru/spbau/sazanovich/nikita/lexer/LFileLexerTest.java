@@ -115,6 +115,27 @@ public class LFileLexerTest {
     getTokensForTestFile("unknown_symbols.lang");
   }
 
+  @Test
+  public void parseWhile() throws Exception {
+    List<LToken> tokenList = getTokensForTestFile("while.lang");
+    assertTokens(tokenList,
+        new LIdentifier("x", 0, 0, 1),
+        new LOperator(ASSIGNMENT, 0, 2, 4),
+        new LIntegerLiteral(10, 0, 5, 7),
+        new LKeyword(WHILE, 1, 0, 5),
+        new LIdentifier("x", 1, 6, 7),
+        new LOperator(MORE, 1, 8, 9),
+        new LIntegerLiteral(0, 1, 10, 11),
+        new LKeyword(DO, 1, 12, 14),
+        new LKeyword(BEGIN, 2, 0, 5),
+        new LIdentifier("x", 3, 4, 5),
+        new LOperator(ASSIGNMENT, 3, 6, 8),
+        new LIdentifier("x", 3, 9, 10),
+        new LOperator(MINUS, 3, 11, 12),
+        new LIntegerLiteral(1, 3, 13, 14),
+        new LKeyword(END, 4, 0, 3));
+  }
+
   private static List<LToken> getTokensForTestFile(String testFileName) throws IOException {
     LFileLexer fileLexer = new LFileLexer(TEST_L_FILES_PATH + testFileName);
     return fileLexer.parse();

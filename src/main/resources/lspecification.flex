@@ -146,6 +146,7 @@ Sign = "+" | "-"
     "<="                    { return lOperator(LOperatorType.LESS_OR_EQUAL); }
     "&&"                    { return lOperator(LOperatorType.AND); }
     "||"                    { return lOperator(LOperatorType.OR); }
+    ":="                    { return lOperator(LOperatorType.ASSIGNMENT); }
 
     /* Separators */
     ";"                     { return lSemicolon(); }

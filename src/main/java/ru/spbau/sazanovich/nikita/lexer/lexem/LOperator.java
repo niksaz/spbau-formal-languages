@@ -51,6 +51,7 @@ public class LOperator extends LToken {
     LESS,
     LESS_OR_EQUAL,
     AND,
-    OR
+    OR,
+    ASSIGNMENT
   }
 }
