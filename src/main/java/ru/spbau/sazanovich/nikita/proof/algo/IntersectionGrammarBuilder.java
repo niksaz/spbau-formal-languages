@@ -169,30 +169,29 @@ public final class IntersectionGrammarBuilder {
                   && production.getProducts().get(0).equals(Symbol.EPS));
     }
 
-    MutableNode automatonStartNode = findStartNode();
+    List<MutableNode> startNodes = findStartNodes();
     List<MutableNode> terminalNodes = findTerminalNodes();
-    for (MutableNode automatonTerminalNode : terminalNodes) {
-      State state = State.of(automatonStartNode, initialNode, automatonTerminalNode);
-      Symbol stateSymbol = Symbol.getSymbolFor(state.toString());
-      intersectionGrammar.addProduction(
-          new Production(intersectionInitialNode, Collections.singletonList(stateSymbol)));
-      if (grammarContainsEpsRule && automatonStartNode.equals(automatonTerminalNode)) {
+    for (MutableNode automatonStartNode : startNodes) {
+      for (MutableNode automatonTerminalNode : terminalNodes) {
+        State state = State.of(automatonStartNode, initialNode, automatonTerminalNode);
+        Symbol stateSymbol = Symbol.getSymbolFor(state.toString());
         intersectionGrammar.addProduction(
-            new Production(stateSymbol, Collections.singletonList(Symbol.EPS)));
+            new Production(intersectionInitialNode, Collections.singletonList(stateSymbol)));
+        if (grammarContainsEpsRule && automatonStartNode.equals(automatonTerminalNode)) {
+          intersectionGrammar.addProduction(
+              new Production(stateSymbol, Collections.singletonList(Symbol.EPS)));
+        }
       }
     }
   }
 
   @NotNull
-  private MutableNode findStartNode() {
+  private List<MutableNode> findStartNodes() {
     List<MutableNode> startNodes = findNodesColored(START_NODE_COLOR);
     if (startNodes.isEmpty()) {
       throw new IllegalArgumentException("No start nodes.");
     }
-    if (startNodes.size() > 1) {
-      throw new IllegalArgumentException("More than one start node.");
-    }
-    return startNodes.get(0);
+    return startNodes;
   }
 
   @NotNull
