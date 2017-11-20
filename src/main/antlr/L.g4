@@ -1,4 +1,4 @@
-grammar Fun;
+grammar L;
 
 file
     : (procedure)* block
@@ -53,31 +53,31 @@ ifStatement
     ;
 
 expression
-    : multiplicativeExpression
-    ;
-
-multiplicativeExpression
-    : additiveExpression (op = (MULTIPLY | DIVIDE | MODULUS) multiplicativeExpression)*
-    ;
-
-additiveExpression
-    : relationalExpression (op = (PLUS | MINUS) additiveExpression)*
-    ;
-
-relationalExpression
-    : equivalenceExpression (op = (GT | LT | GTE | LTE) relationalExpression)*
-    ;
-
-equivalenceExpression
-    : landExpression (op = (EQ | NQ) equivalenceExpression)*
-    ;
-
-landExpression
-    : lorExpression (op = LAND landExpression)*
+    : lorExpression
     ;
 
 lorExpression
-    : atomicExpression (op = LOR lorExpression)*
+    : landExpression (op = LOR lorExpression)*
+    ;
+
+landExpression
+    : equivalenceExpression (op = LAND landExpression)*
+    ;
+
+equivalenceExpression
+    : relationalExpression (op = (EQ | NQ) equivalenceExpression)*
+    ;
+
+relationalExpression
+    : additiveExpression (op = (GT | LT | GTE | LTE) relationalExpression)*
+    ;
+
+additiveExpression
+    : multiplicativeExpression (op = (PLUS | MINUS) additiveExpression)*
+    ;
+
+multiplicativeExpression
+    : atomicExpression (op = (MULTIPLY | DIVIDE | MODULUS) multiplicativeExpression)*
     ;
 
 atomicExpression
