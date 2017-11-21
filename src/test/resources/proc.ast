@@ -1,50 +1,50 @@
-File:
-Procedure:
-  Identifier write_fib
-  ParameterNames:
-    Identifier n
-  Block:
-    Assignment:
-      Identifier x
-      Number 1
-    Assignment:
-      Identifier y
-      Number 1
-    WhileBlock:
-      BinaryExpression:
-        Identifier n
-        Operator >
-        Number 2
-      Block:
-        Assignment:
-          Identifier tmp
-          BinaryExpression:
-            Identifier x
-            Operator +
-            Identifier y
-        Assignment:
-          Identifier x
-          Identifier y
-        Assignment:
-          Identifier y
-          Identifier tmp
-        Assignment:
-          Identifier n
-          BinaryExpression:
-            Identifier n
-            Operator -
-            Number 1
-    WriteCall:
-      Identifier y
-Block:
-  Assignment:
-    Identifier n
-    Number 0
-  ProcedureCall:
-    Identifier read
-    Arguments:
-      Identifier n
-  ProcedureCall:
-    Identifier write_fib
-    Arguments:
-      Identifier n
+File 0..51:
+Procedure 0..40:
+  Identifier 1..1: write_fib
+  ParameterNames 3..3:
+    Identifier 3..3: n
+  Block 6..39:
+    Assignment 6..8:
+      Identifier 6..6: x
+      Number 8..8: 1
+    Assignment 9..11:
+      Identifier 9..9: y
+      Number 11..11: 1
+    WhileBlock 12..35:
+      BinaryExpression 14..16:
+        Identifier 14..14: n
+        Operator 15..15: GT
+        Number 16..16: 2
+      Block 19..34:
+        Assignment 19..23:
+          Identifier 19..19: tmp
+          BinaryExpression 21..23:
+            Identifier 21..21: x
+            Operator 22..22: PLUS
+            Identifier 23..23: y
+        Assignment 24..26:
+          Identifier 24..24: x
+          Identifier 26..26: y
+        Assignment 27..29:
+          Identifier 27..27: y
+          Identifier 29..29: tmp
+        Assignment 30..34:
+          Identifier 30..30: n
+          BinaryExpression 32..34:
+            Identifier 32..32: n
+            Operator 33..33: MINUS
+            Number 34..34: 1
+    WriteCall 36..39:
+      Identifier 38..38: y
+Block 41..51:
+  Assignment 41..43:
+    Identifier 41..41: n
+    Number 43..43: 0
+  ProcedureCall 44..47:
+    Identifier 44..44: read
+    Arguments 46..46:
+      Identifier 46..46: n
+  ProcedureCall 48..51:
+    Identifier 48..48: write_fib
+    Arguments 50..50:
+      Identifier 50..50: n

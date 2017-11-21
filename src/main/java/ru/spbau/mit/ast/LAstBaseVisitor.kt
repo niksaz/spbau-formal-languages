@@ -26,6 +26,8 @@ interface LAstBaseVisitor<out T> {
 
     fun visitBinaryExpression(binaryExpression: LAst.BinaryExpression): T
 
+    fun visitBracedExpression(bracedExpression: LAst.BracedExpression): T
+
     fun visitIdentifier(identifier: LAst.Identifier): T
 
     fun visitNumber(number: LAst.Number): T

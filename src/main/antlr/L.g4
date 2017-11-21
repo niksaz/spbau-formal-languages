@@ -80,10 +80,14 @@ multiplicativeExpression
     : atomicExpression (op = (MULTIPLY | DIVIDE | MODULUS) atomicExpression)*
     ;
 
+bracedExpression
+    : L_BRACE expression R_BRACE
+    ;
+
 atomicExpression
-    : IDENTIFIER
+    : bracedExpression
+    | IDENTIFIER
     | NUMBER
-    | L_BRACE expression R_BRACE
     ;
 
 L_BRACE : '(';

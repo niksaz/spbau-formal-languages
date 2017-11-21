@@ -2,17 +2,17 @@ package ru.spbau.mit.ast
 
 import java.io.PrintStream
 
-class LAstPrinter(val printer: PrintStream = System.out) : LAstBaseVisitor<Unit> {
+class LAstPrinter(private val printer: PrintStream = System.out) : LAstBaseVisitor<Unit> {
     private var indent = ""
 
     override fun visitFile(file: LAst.File) {
-        printer.println("${indent}File:")
+        printer.println("${indent}File ${file.sourceInterval}:")
         file.procedures.forEach { visit(it) }
         visit(file.block)
     }
 
     override fun visitProcedure(procedure: LAst.Procedure) {
-        printer.println("${indent}Procedure:")
+        printer.println("${indent}Procedure ${procedure.sourceInterval}:")
         withIndentIncreased {
             visit(procedure.identifier)
             visit(procedure.paramNames)
@@ -21,17 +21,17 @@ class LAstPrinter(val printer: PrintStream = System.out) : LAstBaseVisitor<Unit>
     }
 
     override fun visitParameterNames(parameterNames: LAst.ParameterNames) {
-        printer.println("${indent}ParameterNames:")
+        printer.println("${indent}ParameterNames ${parameterNames.sourceInterval}:")
         withIndentIncreased { parameterNames.params.forEach { visit(it) } }
     }
 
     override fun visitBlock(block: LAst.Block) {
-        printer.println("${indent}Block:")
+        printer.println("${indent}Block ${block.sourceInterval}:")
         withIndentIncreased { block.statements.forEach { visit(it) } }
     }
 
     override fun visitAssignment(assignment: LAst.Assignment) {
-        printer.println("${indent}Assignment:")
+        printer.println("${indent}Assignment ${assignment.sourceInterval}:")
         withIndentIncreased {
             visit(assignment.identifier)
             visit(assignment.expression)
@@ -39,12 +39,12 @@ class LAstPrinter(val printer: PrintStream = System.out) : LAstBaseVisitor<Unit>
     }
 
     override fun visitWriteCall(writeCall: LAst.WriteCall) {
-        printer.println("${indent}WriteCall:")
+        printer.println("${indent}WriteCall ${writeCall.sourceInterval}:")
         withIndentIncreased { visit(writeCall.expression) }
     }
 
     override fun visitProcedureCall(procedureCall: LAst.ProcedureCall) {
-        printer.println("${indent}ProcedureCall:")
+        printer.println("${indent}ProcedureCall ${procedureCall.sourceInterval}:")
         withIndentIncreased {
             visit(procedureCall.identifier)
             visit(procedureCall.arguments)
@@ -52,12 +52,12 @@ class LAstPrinter(val printer: PrintStream = System.out) : LAstBaseVisitor<Unit>
     }
 
     override fun visitArguments(arguments: LAst.Arguments) {
-        printer.println("${indent}Arguments:")
+        printer.println("${indent}Arguments ${arguments.sourceInterval}:")
         withIndentIncreased { arguments.args.forEach { visit(it) } }
     }
 
     override fun visitWhileBlock(whileBlock: LAst.WhileBlock) {
-        printer.println("${indent}WhileBlock:")
+        printer.println("${indent}WhileBlock ${whileBlock.sourceInterval}:")
         withIndentIncreased {
             visit(whileBlock.condition)
             visit(whileBlock.body)
@@ -65,7 +65,7 @@ class LAstPrinter(val printer: PrintStream = System.out) : LAstBaseVisitor<Unit>
     }
 
     override fun visitIfStatement(ifStatement: LAst.IfStatement) {
-        printer.println("${indent}IfStatement:")
+        printer.println("${indent}IfStatement ${ifStatement.sourceInterval}:")
         withIndentIncreased {
             visit(ifStatement.condition)
             visit(ifStatement.body)
@@ -76,7 +76,7 @@ class LAstPrinter(val printer: PrintStream = System.out) : LAstBaseVisitor<Unit>
     }
 
     override fun visitBinaryExpression(binaryExpression: LAst.BinaryExpression) {
-        printer.println("${indent}BinaryExpression:")
+        printer.println("${indent}BinaryExpression ${binaryExpression.sourceInterval}:")
         withIndentIncreased {
             visit(binaryExpression.leftExpression)
             visit(binaryExpression.operator)
@@ -84,16 +84,22 @@ class LAstPrinter(val printer: PrintStream = System.out) : LAstBaseVisitor<Unit>
         }
     }
 
+    override fun visitBracedExpression(bracedExpression: LAst.BracedExpression) {
+        printer.println("${indent}BracedExpression ${bracedExpression.sourceInterval}:")
+        withIndentIncreased { visit(bracedExpression.expression) }
+    }
+
     override fun visitIdentifier(identifier: LAst.Identifier) {
-        printer.println("${indent}Identifier ${identifier.name}")
+        printer.println(
+            "${indent}Identifier ${identifier.sourceInterval}: ${identifier.terminalNode.text}")
     }
 
     override fun visitNumber(number: LAst.Number) {
-        printer.println("${indent}Number ${number.value}")
+        printer.println("${indent}Number ${number.sourceInterval}: ${number.value}")
     }
 
     override fun visitOperator(operator: LAst.Operator) {
-        printer.println("${indent}Operator ${operator.symbol}")
+        printer.println("${indent}Operator ${operator.sourceInterval}: ${operator.symbol}")
     }
 
     private fun withIndentIncreased(inner: () -> Unit) {
