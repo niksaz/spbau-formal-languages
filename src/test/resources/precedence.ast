@@ -1,0 +1,19 @@
+File:
+Block:
+  Assignment:
+    Identifier x
+    BinaryExpression:
+      BinaryExpression:
+        Number 5
+        Operator *
+        Number 3
+      Operator +
+      BinaryExpression:
+        BinaryExpression:
+          Number 1
+          Operator *
+          Number 2
+        Operator /
+        Number 10
+  WriteCall:
+    Identifier x

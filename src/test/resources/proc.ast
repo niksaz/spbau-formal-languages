@@ -1,0 +1,50 @@
+File:
+Procedure:
+  Identifier write_fib
+  ParameterNames:
+    Identifier n
+  Block:
+    Assignment:
+      Identifier x
+      Number 1
+    Assignment:
+      Identifier y
+      Number 1
+    WhileBlock:
+      BinaryExpression:
+        Identifier n
+        Operator >
+        Number 2
+      Block:
+        Assignment:
+          Identifier tmp
+          BinaryExpression:
+            Identifier x
+            Operator +
+            Identifier y
+        Assignment:
+          Identifier x
+          Identifier y
+        Assignment:
+          Identifier y
+          Identifier tmp
+        Assignment:
+          Identifier n
+          BinaryExpression:
+            Identifier n
+            Operator -
+            Number 1
+    WriteCall:
+      Identifier y
+Block:
+  Assignment:
+    Identifier n
+    Number 0
+  ProcedureCall:
+    Identifier read
+    Arguments:
+      Identifier n
+  ProcedureCall:
+    Identifier write_fib
+    Arguments:
+      Identifier n
