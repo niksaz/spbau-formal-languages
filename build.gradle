@@ -22,6 +22,17 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    manifest {
+        def manif = "${projectDir}/src/main/java/META-INF/MANIFEST.MF"
+        from file(manif)
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    baseName = "lang-parser"
+}
+
 generateGrammarSource {
     maxHeapSize = "64m"
     arguments += ['-package', 'ru.spbau.mit.parser', '-visitor']
