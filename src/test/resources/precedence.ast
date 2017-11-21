@@ -1,5 +1,5 @@
-File 0..18:
-Block 0..18:
+File 0..20:
+Block 0..20:
   Assignment 0..14:
     Identifier 0..0: x
     BinaryExpression 2..14:
@@ -19,5 +19,5 @@ Block 0..18:
             Number 11..11: 10
             Operator 12..12: PLUS
             Number 13..13: 1
-  WriteCall 15..18:
-    Identifier 17..17: x
+  WriteCall 16..19:
+    Identifier 18..18: x

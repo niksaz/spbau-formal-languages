@@ -21,9 +21,9 @@ blockWithBraces
     ;
 
 statement
-    : assignment
-    | writeCall
-    | procedureCall
+    : assignment SEMICOLON
+    | writeCall SEMICOLON
+    | procedureCall SEMICOLON
     | whileBlock
     | ifStatement
     ;
@@ -89,6 +89,8 @@ atomicExpression
     | IDENTIFIER
     | NUMBER
     ;
+
+SEMICOLON : ';';
 
 L_BRACE : '(';
 R_BRACE : ')';
