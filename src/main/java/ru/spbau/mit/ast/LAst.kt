@@ -1,7 +1,6 @@
 package ru.spbau.mit.ast
 
 import org.antlr.v4.runtime.misc.Interval
-import org.antlr.v4.runtime.tree.TerminalNode
 
 data class LAst(val rootNode: Node) {
     interface Node {
@@ -11,26 +10,25 @@ data class LAst(val rootNode: Node) {
     abstract class NodeImpl(open val sourceInterval: Interval) : Node
 
     data class File(
-        val procedures: List<Procedure>,
+        val functions: List<Function>,
         val block: Block,
         override val sourceInterval: Interval
     ) : NodeImpl(sourceInterval) {
-        override fun <T> accept(visitor: LAstBaseVisitor<T>): T =
-            visitor.visitFile(this)
+        override fun <T> accept(visitor: LAstBaseVisitor<T>): T = visitor.visitFile(this)
     }
 
-    data class Procedure(
+    data class Function(
         val identifier: Identifier,
         val paramNames: ParameterNames,
         val body: Block,
         override val sourceInterval: Interval
     ) : NodeImpl(sourceInterval) {
         override fun <T> accept(visitor: LAstBaseVisitor<T>): T =
-            visitor.visitProcedure(this)
+            visitor.visitFunction(this)
     }
 
     data class ParameterNames(
-        val params: List<Identifier>,
+        val params: List<Expression>,
         override val sourceInterval: Interval
     ) : NodeImpl(sourceInterval) {
         override fun <T> accept(visitor: LAstBaseVisitor<T>): T =
@@ -52,7 +50,8 @@ data class LAst(val rootNode: Node) {
     ) : NodeImpl(sourceInterval), Statement
 
     data class Assignment(
-        val identifier: Identifier, val expression: Expression,
+        val identifier: Identifier,
+        val expression: Expression,
         override val sourceInterval: Interval
     ) : StatementImpl(sourceInterval) {
         override fun <T> accept(visitor: LAstBaseVisitor<T>): T =
@@ -75,17 +74,17 @@ data class LAst(val rootNode: Node) {
             visitor.visitWriteCall(this)
     }
 
-    data class ProcedureCall(
+    data class FunctionCall(
         val identifier: Identifier,
         val arguments: Arguments,
         override val sourceInterval: Interval
-    ) : StatementImpl(sourceInterval) {
+    ) : ExpressionImpl(sourceInterval) {
         override fun <T> accept(visitor: LAstBaseVisitor<T>): T =
-            visitor.visitProcedureCall(this)
+            visitor.visitFunctionCall(this)
     }
 
     data class Arguments(
-        val args: List<Identifier>,
+        val args: List<Expression>,
         override val sourceInterval: Interval
     ) : StatementImpl(sourceInterval) {
         override fun <T> accept(visitor: LAstBaseVisitor<T>): T =
@@ -111,11 +110,19 @@ data class LAst(val rootNode: Node) {
             visitor.visitIfStatement(this)
     }
 
-    interface Expression : Node
+    data class ReturnStatement(
+        val expression: LAst.Expression,
+        override val sourceInterval: Interval
+    ) : StatementImpl(sourceInterval) {
+        override fun <T> accept(visitor: LAstBaseVisitor<T>): T =
+            visitor.visitReturnStatement(this)
+    }
+
+    interface Expression : Statement
 
     abstract class ExpressionImpl(
         override val sourceInterval: Interval
-    ) : NodeImpl(sourceInterval), Expression
+    ) : StatementImpl(sourceInterval), Expression
 
     data class BinaryExpression(
         val leftExpression: Expression,

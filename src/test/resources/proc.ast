@@ -1,48 +1,46 @@
-File 0..192:
-Procedure 0..160:
-  Identifier 5..13: write_fib
-  ParameterNames 15..15:
-    Identifier 15..15: n
-  Block 24..158:
-    Assignment 24..29:
-      Identifier 24..24: x
-      Number 29..29: 1
-    Assignment 36..41:
-      Identifier 36..36: y
-      Number 41..41: 1
-    WhileBlock 48..144:
-      BinaryExpression 55..59:
-        Identifier 55..55: n
-        Operator 57..57: GT
-        Number 59..59: 2
-      Block 72..138:
-        Assignment 72..83:
-          Identifier 72..74: tmp
-          BinaryExpression 79..83:
-            Identifier 79..79: x
-            Operator 81..81: PLUS
-            Identifier 83..83: y
-        Assignment 94..99:
-          Identifier 94..94: x
-          Identifier 99..99: y
-        Assignment 110..117:
-          Identifier 110..110: y
-          Identifier 115..117: tmp
-        Assignment 128..137:
-          Identifier 128..128: n
-          BinaryExpression 133..137:
-            Identifier 133..133: n
-            Operator 135..135: MINUS
-            Number 137..137: 1
-    WriteCall 150..157:
-      Identifier 156..156: y
-Block 163..192:
-  Assignment 163..168:
-    Identifier 163..163: n
-    Number 168..168: 0
-  ReadCall 171..177:
-    Identifier 176..176: n
-  ProcedureCall 180..191:
-    Identifier 180..188: write_fib
-    Arguments 190..190:
-      Identifier 190..190: n
+File 0..178:
+Function 0..153:
+  Identifier 4..6: fib
+  ParameterNames 8..8:
+    Identifier 8..8: n
+  Block 17..151:
+    Assignment 17..22:
+      Identifier 17..17: x
+      Number 22..22: 1
+    Assignment 29..34:
+      Identifier 29..29: y
+      Number 34..34: 1
+    WhileBlock 41..137:
+      BinaryExpression 48..52:
+        Identifier 48..48: n
+        Operator 50..50: GT
+        Number 52..52: 2
+      Block 65..131:
+        Assignment 65..76:
+          Identifier 65..67: tmp
+          BinaryExpression 72..76:
+            Identifier 72..72: x
+            Operator 74..74: PLUS
+            Identifier 76..76: y
+        Assignment 87..92:
+          Identifier 87..87: x
+          Identifier 92..92: y
+        Assignment 103..110:
+          Identifier 103..103: y
+          Identifier 108..110: tmp
+        Assignment 121..130:
+          Identifier 121..121: n
+          BinaryExpression 126..130:
+            Identifier 126..126: n
+            Operator 128..128: MINUS
+            Number 130..130: 1
+    ReturnStatement 143..150:
+      Identifier 150..150: y
+Block 156..178:
+  ReadCall 156..162:
+    Identifier 161..161: n
+  WriteCall 165..177:
+    FunctionCall 171..176:
+      Identifier 171..173: fib
+      Arguments 175..175:
+        Identifier 175..175: n

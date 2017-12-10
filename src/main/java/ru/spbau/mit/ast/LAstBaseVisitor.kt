@@ -6,7 +6,7 @@ interface LAstBaseVisitor<out T> {
 
     fun visitFile(file: LAst.File): T
 
-    fun visitProcedure(procedure: LAst.Procedure): T
+    fun visitFunction(function: LAst.Function): T
 
     fun visitParameterNames(parameterNames: LAst.ParameterNames): T
 
@@ -18,7 +18,9 @@ interface LAstBaseVisitor<out T> {
 
     fun visitWriteCall(writeCall: LAst.WriteCall): T
 
-    fun visitProcedureCall(procedureCall: LAst.ProcedureCall): T
+    fun visitReturnStatement(returnStatement: LAst.ReturnStatement): T
+
+    fun visitFunctionCall(functionCall: LAst.FunctionCall): T
 
     fun visitArguments(arguments: LAst.Arguments): T
 

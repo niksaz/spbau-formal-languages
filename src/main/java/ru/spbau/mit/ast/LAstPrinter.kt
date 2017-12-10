@@ -7,16 +7,16 @@ class LAstPrinter(private val printer: PrintStream = System.out) : LAstBaseVisit
 
     override fun visitFile(file: LAst.File) {
         printer.println("${indent}File ${file.sourceInterval}:")
-        file.procedures.forEach { visit(it) }
+        file.functions.forEach { visit(it) }
         visit(file.block)
     }
 
-    override fun visitProcedure(procedure: LAst.Procedure) {
-        printer.println("${indent}Procedure ${procedure.sourceInterval}:")
+    override fun visitFunction(function: LAst.Function) {
+        printer.println("${indent}Function ${function.sourceInterval}:")
         withIndentIncreased {
-            visit(procedure.identifier)
-            visit(procedure.paramNames)
-            visit(procedure.body)
+            visit(function.identifier)
+            visit(function.paramNames)
+            visit(function.body)
         }
     }
 
@@ -48,11 +48,16 @@ class LAstPrinter(private val printer: PrintStream = System.out) : LAstBaseVisit
         withIndentIncreased { visit(writeCall.expression) }
     }
 
-    override fun visitProcedureCall(procedureCall: LAst.ProcedureCall) {
-        printer.println("${indent}ProcedureCall ${procedureCall.sourceInterval}:")
+    override fun visitReturnStatement(returnStatement: LAst.ReturnStatement) {
+        printer.println("${indent}ReturnStatement ${returnStatement.sourceInterval}:")
+        withIndentIncreased { visit(returnStatement.expression) }
+    }
+
+    override fun visitFunctionCall(functionCall: LAst.FunctionCall) {
+        printer.println("${indent}FunctionCall ${functionCall.sourceInterval}:")
         withIndentIncreased {
-            visit(procedureCall.identifier)
-            visit(procedureCall.arguments)
+            visit(functionCall.identifier)
+            visit(functionCall.arguments)
         }
     }
 

@@ -2,6 +2,7 @@ package ru.spbau.mit.ast
 
 import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.misc.Interval
+import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNode
 import ru.spbau.mit.parser.LBaseVisitor
 import ru.spbau.mit.parser.LParser
@@ -11,16 +12,16 @@ class AntlrLAstBuilder : LBaseVisitor<LAst.Node>() {
     fun buildAstFromContext(ctx: ParserRuleContext): LAst = LAst(visit(ctx))
 
     override fun visitFile(ctx: LParser.FileContext): LAst.Node {
-        val procedures = ctx.procedure().map { visit(it) as LAst.Procedure}
+        val procedures = ctx.function().map { visit(it) as LAst.Function}
         val block = visit(ctx.block()) as LAst.Block
         return LAst.File(procedures, block, intervalFor(ctx))
     }
 
-    override fun visitProcedure(ctx: LParser.ProcedureContext): LAst.Node {
+    override fun visitFunction(ctx: LParser.FunctionContext): LAst.Node {
         val identifier = identifierFor(ctx.IDENTIFIER())
         val paramNames = visit(ctx.parameterNames()) as LAst.ParameterNames
         val body = visit(ctx.blockWithBraces()) as LAst.Block
-        return LAst.Procedure(identifier, paramNames, body, intervalFor(ctx))
+        return LAst.Function(identifier, paramNames, body, intervalFor(ctx))
     }
 
     override fun visitParameterNames(ctx: LParser.ParameterNamesContext): LAst.Node {
@@ -48,15 +49,20 @@ class AntlrLAstBuilder : LBaseVisitor<LAst.Node>() {
     override fun visitWriteCall(ctx: LParser.WriteCallContext): LAst.Node =
         LAst.WriteCall(visit(ctx.expression()) as LAst.Expression, intervalFor(ctx))
 
-    override fun visitProcedureCall(ctx: LParser.ProcedureCallContext): LAst.Node {
+    override fun visitReturnStatement(ctx: LParser.ReturnStatementContext): LAst.Node {
+        val expression = visit(ctx.expression()) as LAst.Expression
+        return LAst.ReturnStatement(expression, intervalFor(ctx))
+    }
+
+    override fun visitFunctionCall(ctx: LParser.FunctionCallContext): LAst.Node {
         val identifier = identifierFor(ctx.IDENTIFIER())
         val arguments = visit(ctx.arguments()) as LAst.Arguments
-        return LAst.ProcedureCall(identifier, arguments, intervalFor(ctx))
+        return LAst.FunctionCall(identifier, arguments, intervalFor(ctx))
     }
 
     override fun visitArguments(ctx: LParser.ArgumentsContext): LAst.Node {
-        val possibleExpressions = ctx.IDENTIFIER()
-        val expressions = possibleExpressions?.map { identifierFor(it) }.orEmpty()
+        val possibleExpressions = ctx.expression()
+        val expressions = possibleExpressions?.map { visit(it) as LAst.Expression }.orEmpty()
         return LAst.Arguments(expressions, intervalFor(ctx))
     }
 
@@ -129,7 +135,12 @@ class AntlrLAstBuilder : LBaseVisitor<LAst.Node>() {
             }
             return LAst.Number(value, intervalFor(ctx))
         }
-        return visit(ctx.bracedExpression())
+        val otherAtomicExpressions = listOf<ParseTree?>(
+            ctx.functionCall(),
+            ctx.bracedExpression()
+        )
+        val atomicExpression = otherAtomicExpressions.find { it != null }
+        return visit(atomicExpression!!)
     }
 
     override fun aggregateResult(aggregate: LAst.Node?, nextResult: LAst.Node?): LAst.Node? =

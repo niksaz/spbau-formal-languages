@@ -1,15 +1,7 @@
 grammar L;
 
 file
-    : (procedure)* block EOF
-    ;
-
-procedure
-    : PROCEDURE IDENTIFIER L_BRACE parameterNames R_BRACE blockWithBraces
-    ;
-
-parameterNames
-    : (IDENTIFIER (COMMA IDENTIFIER)*)?
+    : (function)* block EOF
     ;
 
 block
@@ -24,9 +16,18 @@ statement
     : assignment SEMICOLON
     | readCall SEMICOLON
     | writeCall SEMICOLON
-    | procedureCall SEMICOLON
+    | returnStatement SEMICOLON
+    | functionCall SEMICOLON
     | whileBlock
     | ifStatement
+    ;
+
+function
+    : FUNCTION IDENTIFIER L_BRACE parameterNames R_BRACE blockWithBraces
+    ;
+
+parameterNames
+    : (IDENTIFIER (COMMA IDENTIFIER)*)?
     ;
 
 assignment
@@ -41,12 +42,16 @@ writeCall
     : WRITE L_BRACE expression R_BRACE
     ;
 
-procedureCall
+returnStatement
+    : RETURN expression
+    ;
+
+functionCall
     : IDENTIFIER L_BRACE arguments R_BRACE
     ;
 
 arguments
-    : (IDENTIFIER (COMMA IDENTIFIER)*)?
+    : (expression (COMMA expression)*)?
     ;
 
 whileBlock
@@ -91,6 +96,7 @@ bracedExpression
 
 atomicExpression
     : bracedExpression
+    | functionCall
     | IDENTIFIER
     | NUMBER
     ;
@@ -128,13 +134,14 @@ NUMBER
     | '0'
     ;
 
-PROCEDURE : 'proc';
+FUNCTION : 'fun';
 WHILE : 'while';
 IF : 'if';
 THEN : 'then';
 ELSE : 'else';
 READ : 'read';
 WRITE : 'write';
+RETURN : 'return';
 
 IDENTIFIER
     : ALPHA_UNDERSCORE (ALPHA_NUM_UNDERSCORE)*
