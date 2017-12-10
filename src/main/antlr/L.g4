@@ -66,23 +66,23 @@ lorExpression
     ;
 
 landExpression
-    : equivalenceExpression (op = LAND equivalenceExpression)*
+    : equivalenceExpression (LAND equivalenceExpression)*
     ;
 
 equivalenceExpression
-    : relationalExpression (op = (EQ | NQ) relationalExpression)*
+    : relationalExpression ((EQ | NQ) relationalExpression)*
     ;
 
 relationalExpression
-    : additiveExpression (op = (GT | LT | GTE | LTE) additiveExpression)*
+    : additiveExpression ((GT | LT | GTE | LTE) additiveExpression)*
     ;
 
 additiveExpression
-    : multiplicativeExpression (op = (PLUS | MINUS) multiplicativeExpression)*
+    : multiplicativeExpression ((PLUS | MINUS) multiplicativeExpression)*
     ;
 
 multiplicativeExpression
-    : atomicExpression (op = (MULTIPLY | DIVIDE | MODULUS) atomicExpression)*
+    : atomicExpression ((MULTIPLY | DIVIDE | MODULUS) atomicExpression)*
     ;
 
 bracedExpression

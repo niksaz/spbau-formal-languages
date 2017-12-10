@@ -13,14 +13,14 @@ Procedure 0..160:
     WhileBlock 48..144:
       BinaryExpression 55..59:
         Identifier 55..55: n
-        Operator 17..17: GT
+        Operator 57..57: GT
         Number 59..59: 2
       Block 72..138:
         Assignment 72..83:
           Identifier 72..74: tmp
           BinaryExpression 79..83:
             Identifier 79..79: x
-            Operator 24..24: PLUS
+            Operator 81..81: PLUS
             Identifier 83..83: y
         Assignment 94..99:
           Identifier 94..94: x
@@ -32,7 +32,7 @@ Procedure 0..160:
           Identifier 128..128: n
           BinaryExpression 133..137:
             Identifier 133..133: n
-            Operator 38..38: MINUS
+            Operator 135..135: MINUS
             Number 137..137: 1
     WriteCall 150..157:
       Identifier 156..156: y

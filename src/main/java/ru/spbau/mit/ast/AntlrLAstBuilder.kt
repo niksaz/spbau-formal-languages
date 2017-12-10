@@ -74,40 +74,43 @@ class AntlrLAstBuilder : LBaseVisitor<LAst.Node>() {
         return LAst.IfStatement(condition, body, elseBody, intervalFor(ctx))
     }
 
-    override fun visitLorExpression(ctx: LParser.LorExpressionContext): LAst.Node =
-        transformExpression(ctx)
-
-    private fun transformExpression(ctx: ParserRuleContext): LAst.ExpressionImpl {
-        var left = visit(ctx.children[0]) as LAst.ExpressionImpl
-        var i = 1
-        while (i < ctx.childCount) {
-            val opParseTree = ctx.children[i++]
-            val operator = LAst.Operator.getFor(opParseTree.text, opParseTree.sourceInterval)
-            val right = visit(ctx.children[i++]) as LAst.ExpressionImpl
+    private fun transformExpression(
+        exprs: List<ParserRuleContext>, ops: List<TerminalNode>): LAst.ExpressionImpl {
+        var left = visit(exprs[0]) as LAst.ExpressionImpl
+        exprs.drop(1).zip(ops).forEach { (expr, op) ->
+            val operator = operatorFor(op)
+            val right = visit(expr) as LAst.ExpressionImpl
             left = LAst.BinaryExpression(
-                left,
-                operator,
-                right,
-                Interval(left.sourceInterval.a, right.sourceInterval.b))
+                left, operator, right, Interval(left.sourceInterval.a, right.sourceInterval.b))
         }
         return left
     }
 
+    override fun visitLorExpression(ctx: LParser.LorExpressionContext): LAst.Node =
+        transformExpression(ctx.landExpression(), ctx.LOR())
+
     override fun visitLandExpression(ctx: LParser.LandExpressionContext): LAst.Node =
-        transformExpression(ctx)
+        transformExpression(ctx.equivalenceExpression(), ctx.LAND())
 
     override fun visitEquivalenceExpression(ctx: LParser.EquivalenceExpressionContext): LAst.Node =
-        transformExpression(ctx)
+        transformExpression(ctx.relationalExpression(), joinTokenLists(ctx.NQ(), ctx.EQ()))
 
     override fun visitRelationalExpression(ctx: LParser.RelationalExpressionContext): LAst.Node =
-        transformExpression(ctx)
+        transformExpression(
+            ctx.additiveExpression(),
+            joinTokenLists(ctx.GT(), ctx.GTE(), ctx.LT(), ctx.LTE()))
 
     override fun visitAdditiveExpression(ctx: LParser.AdditiveExpressionContext): LAst.Node =
-        transformExpression(ctx)
+        transformExpression(
+            ctx.multiplicativeExpression(),
+            joinTokenLists(ctx.MINUS(), ctx.PLUS()))
 
     override fun visitMultiplicativeExpression(
         ctx: LParser.MultiplicativeExpressionContext
-    ): LAst.Node = transformExpression(ctx)
+    ): LAst.Node =
+        transformExpression(
+            ctx.atomicExpression(),
+            joinTokenLists(ctx.MULTIPLY(), ctx.DIVIDE(), ctx.MODULUS()))
 
     override fun visitBracedExpression(ctx: LParser.BracedExpressionContext): LAst.Node =
         LAst.BracedExpression(visit(ctx.expression()) as LAst.Expression, intervalFor(ctx))
@@ -138,5 +141,15 @@ class AntlrLAstBuilder : LBaseVisitor<LAst.Node>() {
 
         private fun identifierFor(node: TerminalNode): LAst.Identifier =
             LAst.Identifier(node.text, Interval(node.symbol.startIndex, node.symbol.stopIndex))
+
+        private fun operatorFor(node: TerminalNode): LAst.Operator =
+            LAst.Operator.getFor(node.text, Interval(node.symbol.startIndex, node.symbol.stopIndex))
+
+        private fun joinTokenLists(vararg tokenLists: List<TerminalNode>): List<TerminalNode> {
+            val result = mutableListOf<TerminalNode>()
+            tokenLists.forEach { result.addAll(it) }
+            result.sortBy { it -> it.symbol.startIndex }
+            return result.toList()
+        }
     }
 }

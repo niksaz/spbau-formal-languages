@@ -12,7 +12,7 @@ Block 0..85:
   IfStatement 30..85:
     BinaryExpression 34..38:
       Identifier 34..34: a
-      Operator 15..15: GT
+      Operator 36..36: GT
       Identifier 38..38: b
     Block 52..60:
       WriteCall 52..59:
