@@ -1,0 +1,22 @@
+File 0..85:
+Block 0..85:
+  Assignment 0..6:
+    Identifier 0..0: a
+    Number 5..6: 10
+  Assignment 10..16:
+    Identifier 10..10: c
+    Number 15..16: 15
+  Assignment 20..26:
+    Identifier 20..20: b
+    Number 25..26: 20
+  IfStatement 30..85:
+    BinaryExpression 34..38:
+      Identifier 34..34: a
+      Operator 36..36: GT
+      Identifier 38..38: b
+    Block 52..60:
+      WriteCall 52..59:
+        Number 58..58: 1
+    Block 75..83:
+      WriteCall 75..82:
+        Number 81..81: 0

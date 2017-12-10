@@ -1,0 +1,46 @@
+File 0..178:
+Function 0..153:
+  Identifier 4..6: fib
+  ParameterNames 8..8:
+    Identifier 8..8: n
+  Block 17..151:
+    Assignment 17..22:
+      Identifier 17..17: x
+      Number 22..22: 1
+    Assignment 29..34:
+      Identifier 29..29: y
+      Number 34..34: 1
+    WhileBlock 41..137:
+      BinaryExpression 48..52:
+        Identifier 48..48: n
+        Operator 50..50: GT
+        Number 52..52: 2
+      Block 65..131:
+        Assignment 65..76:
+          Identifier 65..67: tmp
+          BinaryExpression 72..76:
+            Identifier 72..72: x
+            Operator 74..74: PLUS
+            Identifier 76..76: y
+        Assignment 87..92:
+          Identifier 87..87: x
+          Identifier 92..92: y
+        Assignment 103..110:
+          Identifier 103..103: y
+          Identifier 108..110: tmp
+        Assignment 121..130:
+          Identifier 121..121: n
+          BinaryExpression 126..130:
+            Identifier 126..126: n
+            Operator 128..128: MINUS
+            Number 130..130: 1
+    ReturnStatement 143..150:
+      Identifier 150..150: y
+Block 156..178:
+  ReadCall 156..162:
+    Identifier 161..161: n
+  WriteCall 165..177:
+    FunctionCall 171..176:
+      Identifier 171..173: fib
+      Arguments 175..175:
+        Identifier 175..175: n

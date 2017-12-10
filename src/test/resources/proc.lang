@@ -1,0 +1,14 @@
+fun fib(n) {
+    x := 1;
+    y := 1;
+    while (n > 2) {
+        tmp := x + y;
+        x := y;
+        y := tmp;
+        n := n - 1;
+    }
+    return y;
+}
+
+read(n);
+write(fib(n));
