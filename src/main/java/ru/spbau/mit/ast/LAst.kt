@@ -136,7 +136,7 @@ data class LAst(val rootNode: Node) {
     }
 
     data class Identifier(
-        val terminalNode: TerminalNode,
+        val name: String,
         override val sourceInterval: Interval
     ) : ExpressionImpl(sourceInterval) {
         override fun <T> accept(visitor: LAstBaseVisitor<T>): T =

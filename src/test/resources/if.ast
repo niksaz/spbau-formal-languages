@@ -1,22 +1,22 @@
-File 0..34:
-Block 0..33:
-  Assignment 0..2:
+File 0..85:
+Block 0..85:
+  Assignment 0..6:
     Identifier 0..0: a
-    Number 2..2: 10
-  Assignment 4..6:
-    Identifier 4..4: c
-    Number 6..6: 15
-  Assignment 8..10:
-    Identifier 8..8: b
-    Number 10..10: 20
-  IfStatement 12..33:
-    BinaryExpression 14..16:
-      Identifier 14..14: a
+    Number 5..6: 10
+  Assignment 10..16:
+    Identifier 10..10: c
+    Number 15..16: 15
+  Assignment 20..26:
+    Identifier 20..20: b
+    Number 25..26: 20
+  IfStatement 30..85:
+    BinaryExpression 34..38:
+      Identifier 34..34: a
       Operator 15..15: GT
-      Identifier 16..16: b
-    Block 20..24:
-      WriteCall 20..23:
-        Number 22..22: 1
-    Block 28..32:
-      WriteCall 28..31:
-        Number 30..30: 0
+      Identifier 38..38: b
+    Block 52..60:
+      WriteCall 52..59:
+        Number 58..58: 1
+    Block 75..83:
+      WriteCall 75..82:
+        Number 81..81: 0

@@ -96,7 +96,7 @@ class LAstPrinter(private val printer: PrintStream = System.out) : LAstBaseVisit
 
     override fun visitIdentifier(identifier: LAst.Identifier) {
         printer.println(
-            "${indent}Identifier ${identifier.sourceInterval}: ${identifier.terminalNode.text}")
+            "${indent}Identifier ${identifier.sourceInterval}: ${identifier.name}")
     }
 
     override fun visitNumber(number: LAst.Number) {

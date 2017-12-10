@@ -1,23 +1,23 @@
-File 0..21:
-Block 0..20:
-  Assignment 0..14:
+File 0..39:
+Block 0..39:
+  Assignment 0..28:
     Identifier 0..0: x
-    BinaryExpression 2..14:
-      BinaryExpression 2..4:
-        Number 2..2: 5
+    BinaryExpression 5..28:
+      BinaryExpression 5..9:
+        Number 5..5: 5
         Operator 3..3: MULTIPLY
-        Number 4..4: 3
+        Number 9..9: 3
       Operator 5..5: PLUS
-      BinaryExpression 6..14:
-        BinaryExpression 6..8:
-          Number 6..6: 1
+      BinaryExpression 13..28:
+        BinaryExpression 13..17:
+          Number 13..13: 1
           Operator 7..7: MULTIPLY
-          Number 8..8: 2
+          Number 17..17: 2
         Operator 9..9: DIVIDE
-        BracedExpression 10..14:
-          BinaryExpression 11..13:
-            Number 11..11: 10
+        BracedExpression 21..28:
+          BinaryExpression 22..27:
+            Number 22..23: 10
             Operator 12..12: PLUS
-            Number 13..13: 1
-  WriteCall 16..19:
-    Identifier 18..18: x
+            Number 27..27: 1
+  WriteCall 31..38:
+    Identifier 37..37: x
