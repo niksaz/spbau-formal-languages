@@ -38,6 +38,11 @@ class LAstPrinter(private val printer: PrintStream = System.out) : LAstBaseVisit
         }
     }
 
+    override fun visitReadCall(readCall: LAst.ReadCall) {
+        printer.println("${indent}ReadCall ${readCall.sourceInterval}:")
+        withIndentIncreased { visit(readCall.argument) }
+    }
+
     override fun visitWriteCall(writeCall: LAst.WriteCall) {
         printer.println("${indent}WriteCall ${writeCall.sourceInterval}:")
         withIndentIncreased { visit(writeCall.expression) }

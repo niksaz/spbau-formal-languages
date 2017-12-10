@@ -2,6 +2,7 @@ package ru.spbau.mit
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import ru.spbau.mit.parser.LParsingException
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import java.nio.file.Files
@@ -21,6 +22,16 @@ class LTests {
     @Test
     fun testProcLang() {
         verifyFor("proc.lang", "proc.ast")
+    }
+
+    @Test(expected = LParsingException::class)
+    fun testErrorIfLang() {
+        verifyFor("error_if.lang", "")
+    }
+
+    @Test(expected = LParsingException::class)
+    fun testErrorEndLang() {
+        verifyFor("error_end.lang", "")
     }
 
     private fun verifyFor(langFileName: String, astFileName: String) {

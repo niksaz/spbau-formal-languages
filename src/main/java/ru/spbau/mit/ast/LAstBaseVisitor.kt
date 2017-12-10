@@ -14,6 +14,8 @@ interface LAstBaseVisitor<out T> {
 
     fun visitAssignment(assignment: LAst.Assignment): T
 
+    fun visitReadCall(readCall: LAst.ReadCall): T
+
     fun visitWriteCall(writeCall: LAst.WriteCall): T
 
     fun visitProcedureCall(procedureCall: LAst.ProcedureCall): T

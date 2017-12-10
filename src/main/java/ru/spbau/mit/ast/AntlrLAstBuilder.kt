@@ -40,6 +40,11 @@ class AntlrLAstBuilder : LBaseVisitor<LAst.Node>() {
         return LAst.Assignment(identifier, expression, ctx.sourceInterval)
     }
 
+    override fun visitReadCall(ctx: LParser.ReadCallContext): LAst.Node {
+        val identifier = LAst.Identifier(ctx.IDENTIFIER(), ctx.IDENTIFIER().sourceInterval)
+        return LAst.ReadCall(identifier, ctx.sourceInterval)
+    }
+
     override fun visitWriteCall(ctx: LParser.WriteCallContext): LAst.Node =
         LAst.WriteCall(visit(ctx.expression()) as LAst.Expression, ctx.sourceInterval)
 

@@ -59,6 +59,14 @@ data class LAst(val rootNode: Node) {
             visitor.visitAssignment(this)
     }
 
+    data class ReadCall(
+        val argument: Identifier,
+        override val sourceInterval: Interval
+    ) : StatementImpl(sourceInterval) {
+        override fun <T> accept(visitor: LAstBaseVisitor<T>): T =
+            visitor.visitReadCall(this)
+    }
+
     data class WriteCall(
         val expression: Expression,
         override val sourceInterval: Interval

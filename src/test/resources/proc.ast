@@ -1,4 +1,4 @@
-File 0..61:
+File 0..62:
 Procedure 0..47:
   Identifier 1..1: write_fib
   ParameterNames 3..3:
@@ -40,10 +40,8 @@ Block 48..61:
   Assignment 48..50:
     Identifier 48..48: n
     Number 50..50: 0
-  ProcedureCall 52..55:
-    Identifier 52..52: read
-    Arguments 54..54:
-      Identifier 54..54: n
+  ReadCall 52..55:
+    Identifier 54..54: n
   ProcedureCall 57..60:
     Identifier 57..57: write_fib
     Arguments 59..59:

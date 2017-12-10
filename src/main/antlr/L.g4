@@ -1,7 +1,7 @@
 grammar L;
 
 file
-    : (procedure)* block
+    : (procedure)* block EOF
     ;
 
 procedure
@@ -22,6 +22,7 @@ blockWithBraces
 
 statement
     : assignment SEMICOLON
+    | readCall SEMICOLON
     | writeCall SEMICOLON
     | procedureCall SEMICOLON
     | whileBlock
@@ -30,6 +31,10 @@ statement
 
 assignment
     : IDENTIFIER ASSIGN expression
+    ;
+
+readCall
+    : READ L_BRACE IDENTIFIER R_BRACE
     ;
 
 writeCall
@@ -128,6 +133,7 @@ WHILE : 'while';
 IF : 'if';
 THEN : 'then';
 ELSE : 'else';
+READ : 'read';
 WRITE : 'write';
 
 IDENTIFIER
